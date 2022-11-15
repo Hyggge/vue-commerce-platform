@@ -12,6 +12,7 @@ export default {
      */
     async set ({ state, dispatch }, info) {
       // store 赋值
+      console.log(info.username)
       state.info = info
       // 持久化
       await dispatch('d2admin/db/set', {

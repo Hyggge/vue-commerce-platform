@@ -1,6 +1,9 @@
 // Element
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+// View UI
+import ViewUI from 'view-design'
+import 'view-design/dist/styles/iview.css'
 // flex 布局库
 import 'flex.css'
 // 组件
@@ -38,5 +41,6 @@ export default {
     Vue.use(pluginError)
     Vue.use(pluginLog)
     Vue.use(pluginOpen)
+    Vue.use(ViewUI)
   }
 }

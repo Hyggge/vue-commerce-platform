@@ -79,11 +79,11 @@ function createRequestFunction (service) {
     const token = util.cookies.get('token')
     const configDefault = {
       headers: {
-        Authorization: token,
+        Authorization: 'Bearer ' + token,
         'Content-Type': get(config, 'headers.Content-Type', 'application/json')
       },
       timeout: 5000,
-      baseURL: process.env.VUE_APP_API,
+      baseURL: process.env.VUE_APP_VIRTUAL_API,
       data: {}
     }
     return service(Object.assign(configDefault, config))

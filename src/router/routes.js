@@ -85,7 +85,12 @@ const frameOut = [
   {
     path: '/login',
     name: 'login',
-    component: _import('system/login')
+    component: _import('system/user/login')
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: _import('system/user/register')
   }
 ]
 
