@@ -16,29 +16,40 @@ function supplementPath (menu) {
 }
 
 export const menuHeader = supplementPath([
-  { path: '/index', title: '首页', icon: 'home' },
-  {
-    title: '页面',
-    icon: 'folder-o',
-    children: [
-      { path: '/page1', title: '页面 1' },
-      { path: '/page2', title: '页面 2' },
-      { path: '/page3', title: '页面 3' },
-      { path: '/page-demo', title: '新建示例' }
-    ]
-  }
+  { path: '/index', title: '首页', icon: 'home' }
 ])
 
 export const menuAside = supplementPath([
-  { path: '/index', title: '首页', icon: 'home' },
   {
-    title: '页面',
-    icon: 'folder-o',
+    path: '/index',
+    title: '首页',
+    icon: 'shopping-cart'
+  },
+  {
+    path: '/user/orders',
+    title: '我的订单',
+    icon: 'truck'
+  },
+  {
+    title: '我的店铺',
+    icon: 'home',
     children: [
-      { path: '/page1', title: '页面 1' },
-      { path: '/page2', title: '页面 2' },
-      { path: '/page3', title: '页面 3' },
-      { path: '/page-demo', title: '新建示例' }
+      { path: '/shop/details', title: '店铺信息', icon: 'balance-scale' },
+      { path: '/shop/goods', title: '店铺商品', icon: 'shopping-bag' },
+      { path: '/shop/orders', title: '店铺订单', icon: 'rocket' }
+    ]
+  },
+  {
+    path: '/user/details',
+    title: '个人中心',
+    icon: 'user'
+  },
+  {
+    title: '管理',
+    icon: 'cog',
+    children: [
+      { path: '/admin/show-users', title: '用户列表', icon: 'bar-chart' },
+      { path: '/admin/show-orders', title: '订单列表', icon: 'line-chart' }
     ]
   }
 ])

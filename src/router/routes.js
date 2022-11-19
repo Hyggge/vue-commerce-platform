@@ -19,35 +19,73 @@ const frameIn = [
         meta: {
           auth: true
         },
-        component: _import('system/index')
+        component: () => import('@/views/home')
       },
-      // 演示页面
+      // 管理员页面
       {
-        path: 'page1',
-        name: 'page1',
+        path: 'admin/show-users',
+        name: 'show-users',
         meta: {
-          title: '页面 1',
+          title: '用户列表',
           auth: true
         },
-        component: _import('demo/page1')
+        component: () => import('@/views/admin/show-users')
       },
       {
-        path: 'page2',
-        name: 'page2',
+        path: 'admin/show-orders',
+        name: 'show-orders',
         meta: {
-          title: '页面 2',
+          title: '订单列表',
           auth: true
         },
-        component: _import('demo/page2')
+        component: () => import('@/views/admin/show-orders')
+      },
+      // 用户页面
+      {
+        path: 'user/details',
+        name: 'user-details',
+        meta: {
+          title: '用户信息',
+          auth: true
+        },
+        component: () => import('@/views/user/details')
       },
       {
-        path: 'page3',
-        name: 'page3',
+        path: 'user/orders',
+        name: 'user-orders',
         meta: {
-          title: '页面 3',
+          title: '用户订单',
           auth: true
         },
-        component: _import('demo/page3')
+        component: () => import('@/views/user/orders')
+      },
+      // 店铺页面
+      {
+        path: 'shop/details',
+        name: 'shop-details',
+        meta: {
+          title: '店铺信息',
+          auth: true
+        },
+        component: () => import('@/views/shop/details')
+      },
+      {
+        path: 'shop/orders',
+        name: 'shop-orders',
+        meta: {
+          title: '店铺订单',
+          auth: true
+        },
+        component: () => import('@/views/shop/orders')
+      },
+      {
+        path: 'shop/goods',
+        name: 'shop-goods',
+        meta: {
+          title: '店铺商品',
+          auth: true
+        },
+        component: () => import('@/views/shop/orders')
       },
       // 系统 前端日志
       {

@@ -15,5 +15,11 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
       method: 'post',
       data
     })
+  },
+  CHECK_DUP_USERNAME(username) {
+    return request({
+      url: `/auth/check_username/${username}`,
+      method: 'get'
+    })
   }
 })

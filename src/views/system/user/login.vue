@@ -9,7 +9,7 @@
         <div class="container" @keydown.enter="onSubmit">
           <el-input
             prefix-icon="el-icon-user-solid"
-            v-model="username"
+            v-model.trim="username"
             placeholder="请输入用户名"
             class="my-el-input"
           >
@@ -17,7 +17,7 @@
 
           <el-input
             prefix-icon="el-icon-lock"
-            v-model="password"
+            v-model.trim="password"
             placeholder="请输入密码"
             class="my-el-input"
             show-password

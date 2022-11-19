@@ -22,12 +22,13 @@
         <div class="d2-header-right" flex-box="0">
           <!-- 如果你只想在开发环境显示这个按钮请添加 v-if="$env === 'development'" -->
           <d2-header-search @click="handleSearchClick"/>
-          <d2-header-log/>
+          <d2-header-log v-if="$env === 'development'"/>
           <d2-header-fullscreen/>
           <d2-header-theme/>
-          <d2-header-size/>
-          <d2-header-locales/>
-          <d2-header-color/>
+<!--          <d2-header-size/>-->
+<!--          <d2-header-locales/>-->
+<!--          <d2-header-color/>-->
+          <el-avatar style="margin-left: 10px" :size="30" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"></el-avatar>
           <d2-header-user/>
         </div>
       </div>

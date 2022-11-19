@@ -10,15 +10,16 @@
           <el-input
             prefix-icon="el-icon-user-solid"
             class='my-el-input'
-            v-model='username'
+            v-model.trim='username'
             placeholder='请输入用户名'
+            @blur = 'checkDupUsername'
             style='margin-bottom: 20px'
           >
           </el-input>
 
           <el-input
             prefix-icon="el-icon-lock"
-            v-model='password'
+            v-model.trim='password'
             class='my-el-input'
             placeholder='请输入密码'
             show-password
@@ -29,7 +30,7 @@
           <el-input
             prefix-icon="el-icon-lock"
             class='my-el-input'
-            v-model='confirm'
+            v-model.trim='confirm'
             placeholder='再次输入并确认密码'
             show-password
             style='margin-bottom: 20px'
@@ -39,7 +40,7 @@
           <el-input
             prefix-icon="el-icon-lollipop"
             class='my-el-input'
-            v-model='nickname'
+            v-model.trim='nickname'
             placeholder='请输入昵称'
             style='margin-bottom: 20px'
           >
@@ -48,7 +49,7 @@
           <el-input
             prefix-icon="el-icon-message"
             class='my-el-input'
-            v-model='email'
+            v-model.trim='email'
             placeholder='请输入邮箱'
             style='margin-bottom: 5px'
           >
@@ -84,6 +85,19 @@ export default {
   methods: {
     goToLogin () {
       this.$router.push({ name: 'login' })
+    },
+    checkDupUsername () {
+      if (this.username !== '') {
+        api.CHECK_DUP_USERNAME(this.username)
+          .then((res) => {
+            if (res.exist === true) {
+              this.$Message.error('用户名已存在！')
+            }
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+      }
     },
     checkUsername () {
       if (this.username === '' || this.username === null) {
