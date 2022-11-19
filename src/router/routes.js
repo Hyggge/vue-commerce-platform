@@ -21,6 +21,16 @@ const frameIn = [
         },
         component: () => import('@/views/home')
       },
+      // 文章
+      {
+        path: 'articles',
+        name: 'articles',
+        meta: {
+          title: '种草分享',
+          auth: true
+        },
+        component: () => import('@/views/articles')
+      },
       // 管理员页面
       {
         path: 'admin/show-users',
@@ -39,6 +49,15 @@ const frameIn = [
           auth: true
         },
         component: () => import('@/views/admin/show-orders')
+      },
+      {
+        path: 'admin/show-shops',
+        name: 'show-shops',
+        meta: {
+          title: '店铺列表',
+          auth: true
+        },
+        component: () => import('@/views/admin/show-shops')
       },
       // 用户页面
       {

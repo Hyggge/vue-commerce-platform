@@ -23,8 +23,9 @@ export default {
       // util.cookies.set('uuid', res.uuid)
       util.cookies.set('token', res.token)
       console.log('Bearer ' + res.token)
+      console.log(res)
       // 设置 vuex 用户信息
-      await dispatch('d2admin/user/set', { username: username }, { root: true })
+      await dispatch('d2admin/user/set', { username: username, role: res.role, id: res.id }, { root: true })
       // 用户登录后从持久化数据加载一系列的设置
       await dispatch('load')
     },
