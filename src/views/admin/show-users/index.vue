@@ -95,7 +95,7 @@
               placeholder="选择日期">
             </el-date-picker>
           </div>
-          <div v-else>{{ (scope.row.reg_time) }}</div>
+          <div v-else>{{ (scope.row.reg_time.split('T').join('  ').split(/[.Z]/)[0]) }}</div>
         </template>
       </el-table-column>
     </el-table>

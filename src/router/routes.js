@@ -68,15 +68,6 @@ const frameIn = [
         },
         component: () => import('@/views/admin/show-user-certifications')
       },
-      {
-        path: 'admin/show-shop-certifications',
-        name: 'show-shop-certifications',
-        meta: {
-          title: '店铺认证请求列表',
-          auth: true
-        },
-        component: () => import('@/views/admin/show-shop-certifications')
-      },
       // 用户页面
       {
         path: 'user/details',
@@ -106,6 +97,15 @@ const frameIn = [
         component: () => import('@/views/user/certificate')
       },
       // 店铺页面
+      {
+        path: 'shop/create',
+        name: 'shop-create',
+        meta: {
+          title: '创建店铺',
+          auth: true
+        },
+        component: () => import('@/views/shop/create')
+      },
       {
         path: 'shop/details',
         name: 'shop-details',

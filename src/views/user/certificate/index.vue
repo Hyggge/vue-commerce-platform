@@ -57,7 +57,8 @@ export default {
         student_name: '',
         depart: 1,
         attendance_year: '2022',
-        gender: 0
+        gender: 0,
+        image_id: 23
       },
       valid: true,
       options: departList
@@ -65,8 +66,14 @@ export default {
   },
   methods: {
     onSubmit () {
-      console.log(this.form)
+      // 检查表单项是否为空
+      if (this.form.student_id === '' || this.form.student_name == '' ) {
+        this.$Message.error('表单项不能为空')
+        this.valid = false
+      }
+      // 检查学号是否重复
       this.checkDupStudentId(this.form.student_id)
+      // 发起认证请求
       if (this.valid) {
         api.SUBMIT_USER_CERTIFICATE(this.form)
           .then((res) => {

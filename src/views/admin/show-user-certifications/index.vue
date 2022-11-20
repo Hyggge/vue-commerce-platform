@@ -114,7 +114,7 @@
               placeholder="选择日期">
             </el-date-picker>
           </div>
-          <div v-else>{{ (scope.row.req_time) }}</div>
+          <div v-else>{{ (scope.row.req_time.split('T').join('  ').split(/[.Z]/)[0]) }}</div>
         </template>
       </el-table-column>
       <el-table-column
@@ -194,6 +194,7 @@
         </el-descriptions-item>
       </el-descriptions>
       <br><br>
+      <!--如果处于待审批的状态，则显示下面的内容-->
       <template v-if="reqDetails.status === 0">
         <el-form ref="form" :model="form" label-width="80px">
           <el-form-item label="是否通过">
@@ -201,7 +202,7 @@
             <el-radio v-model="pass" :label="false">拒绝</el-radio>
           </el-form-item>
           <el-form-item label="审批意见">
-            <el-input v-model.trim="comment"></el-input>
+            <el-input v-model.trim="comment" @keydown.enter="dealReq"></el-input>
           </el-form-item>
         </el-form>
         <el-button style="margin-left: 45%" type="primary" @click="dealReq">
@@ -255,7 +256,7 @@ export default {
     showReqDetails (reqId) {
       // alert(reqId)
       this.drawer = true
-      api.GER_USER_CERTIFICATE_REQ_Details_ADMIN(reqId)
+      api.GER_USER_CERTIFICATE_REQ_DETAIL_ADMIN(reqId)
         .then((res) => {
           this.reqDetails = res
           this.reqId = reqId
@@ -343,9 +344,9 @@ export default {
      */
     queryReqsByUserId () {
       if (this.queryUserId !== '') {
-        Object.assign(this.filter, { user__id__contains: this.queryUserId })
+        Object.assign(this.filter, { user_id__exact: this.queryUserId })
       } else {
-        delete this.filter.user__id__contains
+        delete this.filter.user_id__exact
       }
       this.currentPage = 1
       this.queryReqs()

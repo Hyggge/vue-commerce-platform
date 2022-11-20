@@ -52,31 +52,49 @@
        width="180">
        <template v-slot="scope">
          <div v-if="scope.$index === 0">
-           <el-input
-             v-model="queryType"
-             size="small"
-             placeholder="查询店铺类型"
-             @change="queryShopsByType"
-           />
+           <el-select v-model="queryType" clearable placeholder="请选择" size="small" @change="queryShopsByType">
+             <el-option :value="0" label="个人店铺"></el-option>
+             <el-option :value="1" label="合作店铺"></el-option>
+           </el-select>
          </div>
-         <div v-else>{{ (scope.row.type) }}</div>
+         <div v-else>
+           <el-tag v-if="scope.row.type === 0"  type="success" effect="dark" size="small">个人店铺</el-tag>
+           <el-tag v-else  type="primary" effect="dark" size="small">合作店铺</el-tag>
+         </div>
        </template>
      </el-table-column>
      <el-table-column
        prop="owner"
-       label="店铺所有者"
+       label="店主学号"
        align="center"
        width="180">
        <template v-slot="scope">
          <div v-if="scope.$index === 0">
            <el-input
-             v-model="queryOwner"
+             v-model="queryOwnerStudentId"
              size="small"
-             placeholder="查询店铺所有者"
-             @change="queryShopsByOwner"
+             placeholder="查询店主学号"
+             @change="queryShopsByOwnerStudentId"
            />
          </div>
-         <div v-else>{{ (scope.row.owner) }}</div>
+         <div v-else>{{ (scope.row.owner.student_id) }}</div>
+       </template>
+     </el-table-column>
+     <el-table-column
+       prop="owner"
+       label="店主姓名"
+       align="center"
+       width="180">
+       <template v-slot="scope">
+         <div v-if="scope.$index === 0">
+           <el-input
+             v-model="queryOwnerStudentName"
+             size="small"
+             placeholder="查询店主ID"
+             @change="queryShopsByOwnerStudentName"
+           />
+         </div>
+         <div v-else>{{ (scope.row.owner.real_name) + `  (ID:${scope.row.owner.id})` }}</div>
        </template>
      </el-table-column>
      <el-table-column
@@ -94,7 +112,7 @@
              placeholder="选择日期">
            </el-date-picker>
          </div>
-         <div v-else>{{ (scope.row.reg_time) }}</div>
+         <div v-else>{{ scope.row.reg_time.split('T').join('  ').split(/[.Z]/)[0] }}</div>
        </template>
      </el-table-column>
    </el-table>
@@ -124,7 +142,8 @@ export default {
       queryId: '',
       queryName: '',
       queryType: '',
-      queryOwner: '',
+      queryOwnerStudentId: '',
+      queryOwnerStudentName: '',
       queryRegTime: '',
       // 当前页面
       currentPage: 1,
@@ -143,7 +162,7 @@ export default {
           type: '合作店铺',
           owner: '陈正昊',
           reg_time: 'sssss'
-        },
+        }
       ]
     }
   },
@@ -231,13 +250,25 @@ export default {
       this.queryShops()
     },
     /**
-     * 根据用户输入的所有者进行查询(部分匹配)
+     * 根据用户输入的店主学号进行查询(部分匹配)
      */
-    queryShopsByOwner () {
-      if (this.queryOwner !== '') {
-        Object.assign(this.filter, { owner__contains: this.queryEmail })
+    queryShopsByOwnerStudentId () {
+      if (this.queryOwnerStudentId !== '') {
+        Object.assign(this.filter, { owner__student__id__contains: this.queryOwnerStudentId })
       } else {
-        delete this.filter.owner__contains
+        delete this.filter.owner__student__id__contains
+      }
+      this.currentPage = 1
+      this.queryShops()
+    },
+    /**
+     * 根据用户输入的店主姓名进行查询(部分匹配)
+     */
+    queryShopsByOwnerStudentName () {
+      if (this.queryOwnerStudentName !== '') {
+        Object.assign(this.filter, { owner__student__name__contains: this.queryOwnerStudentName })
+      } else {
+        delete this.filter.owner__student__name__contains
       }
       this.currentPage = 1
       this.queryShops()
@@ -258,6 +289,9 @@ export default {
       this.currentPage = 1
       this.queryShops()
     }
+  },
+  mounted () {
+    this.queryShops()
   }
 }
 </script>
