@@ -1,4 +1,3 @@
-<script src="../../../api/modules/certificate.api.js"></script>
 <template>
   <d2-container>
     <template v-slot:header>
@@ -156,6 +155,7 @@
       title="申请详情"
       :visible.sync="drawer"
       direction="rtl">
+      <h3 style="margin-left: 20px">学生基本信息</h3><br>
       <el-descriptions class="margin-top"  :column="1"  border>
         <el-descriptions-item>
           <template slot="label">
@@ -193,6 +193,8 @@
           {{reqDetails.attendance_year}}
         </el-descriptions-item>
       </el-descriptions>
+      <br><h3 style="margin-left: 20px">学生证件图片</h3><br>
+      <img :src="reqDetails.image_url" style="width: 100%">
       <br><br>
       <!--如果处于待审批的状态，则显示下面的内容-->
       <template v-if="reqDetails.status === 0">

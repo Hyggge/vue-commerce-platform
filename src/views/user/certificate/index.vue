@@ -1,4 +1,3 @@
-<script src="../../../api/modules/certificate.api.js"></script>
 <template>
   <d2-container>
     <template v-slot:header>
@@ -35,10 +34,22 @@
               </el-option>
             </el-select>
           </el-form-item>
+          <el-form-item label="上传图片" required>
+            <el-upload
+              class="avatar-uploader"
+              action="/api/file/upload"
+              :show-file-list="false"
+              :headers="{Authorization: 'Bearer ' + token}"
+              :on-success="handleUploadSuccess">
+              <img v-if="imageUrl" :src="imageUrl" style="width: 100%" class="avatar" />
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
+          </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="onSubmit">立即认证</el-button>
           </el-form-item>
         </el-form>
+
       </el-col>
     </el-row>
   </d2-container>
@@ -46,28 +57,34 @@
 
 <script>
 import api from '@/api'
+import util from '@/libs/util.js'
 import { departList } from '@/libs/util.depart'
 
 export default {
   name: 'user-certificate',
   data () {
     return {
+      imageUrl: '',
+      token: util.cookies.get('token'),
       form: {
         student_id: '',
         student_name: '',
         depart: 1,
         attendance_year: '2022',
         gender: 0,
-        image_id: 23
+        image_id: ''
       },
       valid: true,
       options: departList
     }
   },
   methods: {
+    /**
+     * 提交认证请求
+     */
     onSubmit () {
       // 检查表单项是否为空
-      if (this.form.student_id === '' || this.form.student_name == '' ) {
+      if (this.form.student_id === '' || this.form.student_name === '' || this.form.image_id === '') {
         this.$Message.error('表单项不能为空')
         this.valid = false
       }
@@ -101,6 +118,15 @@ export default {
         .catch((err) => {
           console.log(err)
         })
+    },
+    /**
+     * 上传图片成功后记录image_id
+     */
+    handleUploadSuccess (res, file) {
+      if (res.id !== null) {
+        this.imageUrl = URL.createObjectURL(file.raw)
+        this.form.image_id = res.id
+      }
     }
   }
 }
