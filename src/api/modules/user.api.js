@@ -8,5 +8,13 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
       method: 'get',
       params: params
     })
-  }
+  },
+
+  GET_USER_INFO (id) {
+    return request({
+      url: `user/${id}`,
+      method: 'get'
+    })
+  },
+
 })
