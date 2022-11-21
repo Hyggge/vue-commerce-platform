@@ -201,15 +201,13 @@ export default {
             this.$Message.error('删除失败！')
           })
       })
-
     }
   },
   watch: {
     curShopId: {
       handler (newVal) {
         this.getShopDetails()
-      },
-      immediate: true
+      }
     }
   },
   mounted () {
@@ -220,6 +218,7 @@ export default {
           this.$Message.warning('您还没有创建店铺!')
         } else {
           this.curShopId = this.shopList[0].id
+          this.getShopDetails()
         }
       })
   }

@@ -12,7 +12,7 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
   GET_USER_CERTIFICATE_REQ_LIST () {
     return request({
       url: 'student/auth_req/list',
-      method: 'get',
+      method: 'get'
     })
   },
 

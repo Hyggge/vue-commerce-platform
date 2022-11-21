@@ -186,7 +186,7 @@ const frameIn = [
           title: '店铺商品',
           auth: true
         },
-        component: () => import('@/views/shop/orders')
+        component: () => import('@/views/shop/goods')
       },
       // 系统 前端日志
       {
