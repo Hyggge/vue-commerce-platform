@@ -1,4 +1,3 @@
-<script src="../../../router/routes.js"></script>
 <template>
   <d2-container>
      <template v-slot:header>
