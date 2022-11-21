@@ -26,7 +26,7 @@ export const menuAside = supplementPath([
     icon: 'shopping-cart'
   },
   {
-    path: '/articles',
+    path: '/article',
     title: '种草分享',
     icon: 'bookmark'
   },

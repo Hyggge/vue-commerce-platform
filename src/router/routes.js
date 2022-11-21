@@ -23,13 +23,41 @@ const frameIn = [
       },
       // 文章
       {
-        path: 'articles',
-        name: 'articles',
+        path: 'article',
+        name: 'article',
         meta: {
           title: '种草分享',
           auth: true
         },
-        component: () => import('@/views/articles')
+        component: () => import('@/views/article')
+      },
+      // 商品
+      {
+        path: 'commodity/create',
+        name: 'commodity-create',
+        meta: {
+          title: '发布商品',
+          auth: true
+        },
+        component: () => import('@/views/commodity/create')
+      },
+      {
+        path: 'commodity/show-for-user',
+        name: 'commodity-show-for-user',
+        meta: {
+          title: '商品详情',
+          auth: true
+        },
+        component: () => import('@/views/commodity/show-for-user')
+      },
+      {
+        path: 'commodity/show-for-admin',
+        name: 'commodity-show-for-admin',
+        meta: {
+          title: '商品详情',
+          auth: true
+        },
+        component: () => import('@/views/commodity/show-for-admin')
       },
       // 管理员页面
       {
