@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: 'commodity-show-for-admin'
+  name: 'article-create'
 }
 </script>
 

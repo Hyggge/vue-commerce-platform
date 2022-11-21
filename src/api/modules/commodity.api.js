@@ -46,7 +46,7 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
     })
   },
 
-  ADD_COMMODITY_PARAM(paramId, data) {
+  ADD_COMMODITY_PARAM (paramId, data) {
     return request({
       path: `/api/comm/para/add_to_para_set/${paramId}`,
       method: 'post',
@@ -54,14 +54,14 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
     })
   },
 
-  DELETE_COMMODITY_PARAM_GROUP(paramGroupId) {
+  DELETE_COMMODITY_PARAM_GROUP (paramGroupId) {
     return request({
       path: `/api/comm/para_set/${paramGroupId}`,
       method: 'delete'
     })
   },
 
-  UPDATE_COMMODITY_PARAM_GROUP(paramGroupId, data) {
+  UPDATE_COMMODITY_PARAM_GROUP (paramGroupId, data) {
     return request({
       path: `/api/comm/para_set/${paramGroupId}`,
       method: 'put',
@@ -69,7 +69,7 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
     })
   },
 
-  ADD_COMMODITY_PARAM_GROUP(paramGroupId, data) {
+  ADD_COMMODITY_PARAM_GROUP (paramGroupId, data) {
     return request({
       path: `/api/comm/para_set/${paramGroupId}`,
       method: 'post',

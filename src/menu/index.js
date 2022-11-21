@@ -23,10 +23,15 @@ export const menuAside = supplementPath([
   {
     path: '/index',
     title: '首页',
+    icon: 'home'
+  },
+  {
+    path: '/commodity/show-all',
+    title: '北航商城',
     icon: 'shopping-cart'
   },
   {
-    path: '/article',
+    path: '/article/show-all',
     title: '种草分享',
     icon: 'bookmark'
   },

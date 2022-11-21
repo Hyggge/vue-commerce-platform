@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: 'commodity-show-for-user'
+  name: 'show-all-commodities'
 }
 </script>
 

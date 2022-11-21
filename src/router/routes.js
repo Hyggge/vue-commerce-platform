@@ -23,13 +23,31 @@ const frameIn = [
       },
       // 文章
       {
-        path: 'article',
-        name: 'article',
+        path: 'article/create',
+        name: 'article-create',
+        meta: {
+          title: '写文章',
+          auth: true
+        },
+        component: () => import('@/views/article/create')
+      },
+      {
+        path: 'article/show-all',
+        name: 'show-all-articles',
         meta: {
           title: '种草分享',
           auth: true
         },
-        component: () => import('@/views/article')
+        component: () => import('@/views/article/show-all')
+      },
+      {
+        path: 'article/show-details',
+        name: 'show-article-details',
+        meta: {
+          title: '种草分享',
+          auth: true
+        },
+        component: () => import('@/views/article/show-details')
       },
       // 商品
       {
@@ -42,22 +60,31 @@ const frameIn = [
         component: () => import('@/views/commodity/create')
       },
       {
-        path: 'commodity/show-for-user',
-        name: 'commodity-show-for-user',
+        path: 'commodity/show-all',
+        name: 'show-all-commodities',
         meta: {
-          title: '商品详情',
+          title: '商品列表',
           auth: true
         },
-        component: () => import('@/views/commodity/show-for-user')
+        component: () => import('@/views/commodity/show-all')
       },
       {
-        path: 'commodity/show-for-admin',
-        name: 'commodity-show-for-admin',
+        path: 'commodity/show-details-for-user',
+        name: 'show-commodity-details-for-user',
         meta: {
           title: '商品详情',
           auth: true
         },
-        component: () => import('@/views/commodity/show-for-admin')
+        component: () => import('@/views/commodity/show-details-for-user')
+      },
+      {
+        path: 'commodity/show-details-for-admin',
+        name: 'show-commodity-details-for-admin',
+        meta: {
+          title: '商品详情',
+          auth: true
+        },
+        component: () => import('@/views/commodity/show-details-for-admin')
       },
       // 管理员页面
       {
