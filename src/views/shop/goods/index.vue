@@ -15,6 +15,187 @@
         </el-form-item>
       </el-form>
     </template>
+
+    <el-table :data="curCommodityList" style="width: 100%" border>
+      <el-table-column
+        prop="picture"
+        label="商品图片"
+        align="center"
+        width="80">
+        <template v-slot="scope">
+          <img :src="scope.row.img_url" style="width: 100%; height: 80px">
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="name"
+        label="商品名"
+        align="center"
+        width="120">
+      </el-table-column>
+      <el-table-column
+        prop="price"
+        label="价格"
+        align="center"
+        width="120">
+      </el-table-column>
+      <el-table-column
+        prop="discount"
+        label="折后价格"
+        align="center"
+        width="160">
+        <template v-slot="scope">
+          {{`${(parseFloat(scope.row.price) * (1 - scope.row.discount)).toFixed(2)} (折扣:${scope.row.discount * 100}%)`}}
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="method"
+        label="交易方式"
+        align="center"
+        width="120">
+        <template v-slot="scope">
+          <el-tag v-if="scope.row.method === 0" type="success" effect="plain"><strong>线上交易</strong></el-tag>
+          <el-tag v-if="scope.row.method === 1" type="primary" effect="plain"><strong>线下自取</strong></el-tag>
+          <el-tag v-if="scope.row.method === 2" type="warning" effect="plain"><strong>送货上门</strong></el-tag>
+
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="status"
+        label="商品状态"
+        align="center"
+        width="120">
+        <template v-slot="scope">
+          <el-tag v-if="scope.row.status === 0" type="primary"><strong>未生效</strong></el-tag>
+          <el-tag v-if="scope.row.status === 1" type="warning"><strong>预售中</strong></el-tag>
+          <el-tag v-if="scope.row.status === 2" type="success"><strong>售卖中</strong></el-tag>
+          <el-tag v-if="scope.row.status === 3" type="info"><strong>已下架</strong></el-tag>
+
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="sale"
+        label="销量"
+        align="center"
+        width="120">
+      </el-table-column>
+      <el-table-column
+        prop="left"
+        label="余量"
+        align="center"
+        width="120">
+        <template v-slot="scope">
+          {{scope.row.total - scope.row.sale}}
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="other"
+        label=""
+        align="center"
+        width="120">
+        <template v-slot="scope">
+          <el-row style="text-align: center">
+            <el-button round type="primary" size="small" @click="getCommodityDetails(scope.row.id)">查看详情</el-button>
+          </el-row>
+          <el-row style="text-align: center; margin-top: 10px">
+            <el-button round type="danger" size="small" @click="deleteCommodity(scope.row.id)">删除商品</el-button>
+          </el-row>
+        </template>
+      </el-table-column>
+    </el-table>
+
+    <!--抽屉-->
+    <el-drawer
+      title="商品详情"
+      :visible.sync="drawer"
+      direction="rtl">
+      <!--商品图片-->
+      <img :src="curCommodityDetails.img_url" style="width: 100%" alt="">
+      <!--商品介绍-->
+      <h3 style="margin-left: 10px">商品介绍</h3><br>
+      <div style="margin-bottom: 10px; margin-left: 10px">
+        {{curCommodityDetails.introduction}}
+      </div>
+      <!--商品详情-->
+      <h3 style="margin-left: 10px; margin-top: 50px">商品详情</h3><br>
+      <el-descriptions :column="2"  border>
+        <el-descriptions-item :span="2">
+          <template slot="label">
+            商品名称
+          </template>
+          {{curCommodityDetails.name}}
+        </el-descriptions-item>
+        <el-descriptions-item>
+          <template slot="label">
+            价格
+          </template>
+          {{curCommodityDetails.price}}
+        </el-descriptions-item>
+        <el-descriptions-item>
+          <template slot="label">
+            折扣
+          </template>
+          {{curCommodityDetails.discount * 100 + ' %'}}
+        </el-descriptions-item>
+        <el-descriptions-item>
+          <template slot="label">
+            折后
+          </template>
+          {{(curCommodityDetails.price * (1 - curCommodityDetails.discount)).toFixed(2)}}
+        </el-descriptions-item>
+        <el-descriptions-item>
+          <template slot="label">
+            总量
+          </template>
+          {{curCommodityDetails.total}}
+        </el-descriptions-item>
+        <el-descriptions-item>
+          <template slot="label">
+            销量
+          </template>
+          {{curCommodityDetails.sale}}
+        </el-descriptions-item>
+        <el-descriptions-item>
+          <template slot="label">
+            余量
+          </template>
+          {{curCommodityDetails.total - curCommodityDetails.sale}}
+        </el-descriptions-item>
+        <el-descriptions-item>
+          <template slot="label">
+            交易方式
+          </template>
+          <el-tag v-if="curCommodityDetails.method === 0" type="success" effect="plain"><strong>线上交易</strong></el-tag>
+          <el-tag v-if="curCommodityDetails.method === 1" type="primary" effect="plain"><strong>线下自取</strong></el-tag>
+          <el-tag v-if="curCommodityDetails.method === 2" type="warning" effect="plain"><strong>送货上门</strong></el-tag>
+        </el-descriptions-item>
+        <el-descriptions-item>
+          <template slot="label">
+            商品状态
+          </template>
+          <el-tag v-if="curCommodityDetails.status === 0" type="primary"><strong>未生效</strong></el-tag>
+          <el-tag v-if="curCommodityDetails.status === 1" type="warning"><strong>预售中</strong></el-tag>
+          <el-tag v-if="curCommodityDetails.status === 2" type="success"><strong>售卖中</strong></el-tag>
+          <el-tag v-if="curCommodityDetails.status === 3" type="info"><strong>已下架</strong></el-tag>
+        </el-descriptions-item>
+      </el-descriptions>
+      <br><br>
+      <!--商品具体参数-->
+      <h3 style="margin-left: 10px">商品参数</h3><br>
+      <el-descriptions :column="1"  border>
+        <el-descriptions-item v-for="item in curCommodityDetails.parameters" :key="item.id">
+          <template slot="label">
+            {{item.name}}
+          </template>
+          <el-tag v-for="(option, index) in item.options" :key="option.id" :type="tagTypes[index % 4]" style="margin-right: 10px" >
+            {{`${option.description}(¥${(parseFloat(curCommodityDetails.price) + parseFloat(option.add)).toFixed(2)})`}}
+          </el-tag>
+        </el-descriptions-item>
+      </el-descriptions>
+      <!--修改商品信息-->
+      <el-row style="text-align: center">
+        <el-button type="warning" size="small" style="margin-top: 50px" @click="goToUpdateCommodity">修改商品信息</el-button>
+      </el-row>
+    </el-drawer>
   </d2-container>
 </template>
 
@@ -25,30 +206,69 @@ export default {
   name: 'shop-goods',
   data () {
     return {
+      tagTypes: ['success', 'primary', 'warning', 'danger'],
+      drawer: false,
+      select: 0,
       userId: this.$store.state.d2admin.user.info.id,
       shopList: [],
       curShopId: 0,
-      curShopDetails: {},
-      curCommodityList: []
+      curCommodityList: [],
+      curCommodityDetails: {}
     }
   },
   methods: {
+    /**
+     * 获得商铺列表
+     */
     async getShopList () {
       const res = await api.GET_USER_SHOP_LIST(this.userId)
       this.shopList = res.owner_shop.concat(res.admin_shop)
     },
-    async getShopDetails () {
-      const res = await api.GET_SHOP_DETAILS(this.curShopId)
-      this.curShopDetails = res
-    },
+    /**
+     * 获得商品列表
+     */
     async getCommodityList () {
       const res = await api.GET_COMMODITY_LIST_FOR_SHOP(this.curShopId, 1, {keyword: '' })
       this.curCommodityList = res.data
       console.log(this.curCommodityList)
     },
+    /**
+     * 获得某商品的详情
+     */
+    async getCommodityDetails (commodityId) {
+      const res = await api.GET_COMMODITY_DETIALS(commodityId)
+      console.log(res)
+      this.curCommodityDetails = res
+      this.drawer = true
+    },
+    /**
+     * 删除某个商品
+     */
+    async deleteCommodity (commodityId) {
+      await this.$confirm('此操作将永久删除该商品, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+      await api.DELETE_COMMODITY(commodityId)
+      await this.getCommodityList()
+      this.$Message.success('删除成功！')
+    },
+    /**
+     * 跳转到创建商品的页面
+     */
     goToCreateCommodity () {
       this.$router.push({
         name: 'commodity-create',
+        query: { shopId: this.curShopId }
+      })
+    },
+    /**
+     * 跳转到更新商品的页面
+     */
+    goToUpdateCommodity () {
+      this.$router.push({
+        name: 'commodity-update',
         query: { shopId: this.curShopId }
       })
     }
@@ -56,7 +276,6 @@ export default {
   watch: {
     curShopId: {
       handler (newVal) {
-        this.getShopDetails()
         this.getCommodityList()
       }
     }
@@ -70,7 +289,6 @@ export default {
         } else {
           this.curShopId = this.shopList[0].id
           this.getShopDetails()
-          this.getCommodityList()
         }
       })
   }

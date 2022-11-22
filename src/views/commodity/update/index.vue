@@ -114,7 +114,7 @@ import util from '@/libs/util.js'
 import api from '@/api'
 
 export default {
-  name: 'commodity-create',
+  name: 'commodity-update',
   data () {
     return {
       curStep: 0,

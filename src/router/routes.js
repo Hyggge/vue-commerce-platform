@@ -54,10 +54,19 @@ const frameIn = [
         path: 'commodity/create',
         name: 'commodity-create',
         meta: {
-          title: '发布商品',
+          title: '创建商品',
           auth: true
         },
         component: () => import('@/views/commodity/create')
+      },
+      {
+        path: 'commodity/update',
+        name: 'commodity-update',
+        meta: {
+          title: '更新商品信息',
+          auth: true
+        },
+        component: () => import('@/views/commodity/update')
       },
       {
         path: 'commodity/show-all',
