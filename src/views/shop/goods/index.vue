@@ -11,6 +11,7 @@
               :value="item.id">
             </el-option>
           </el-select>
+          <el-button type="success" style="margin-left: 10px" @click="goToCreateCommodity"> 增加商品 </el-button>
         </el-form-item>
       </el-form>
     </template>
@@ -28,24 +29,28 @@ export default {
       shopList: [],
       curShopId: 0,
       curShopDetails: {},
-      curCommodityList: [],
+      curCommodityList: []
     }
   },
   methods: {
     async getShopList () {
       const res = await api.GET_USER_SHOP_LIST(this.userId)
       this.shopList = res.owner_shop.concat(res.admin_shop)
-      console.log(this.shopList)
     },
     async getShopDetails () {
       const res = await api.GET_SHOP_DETAILS(this.curShopId)
       this.curShopDetails = res
-      console.log(res)
     },
     async getCommodityList () {
       const res = await api.GET_COMMODITY_LIST_FOR_SHOP(this.curShopId, 1, {keyword: '' })
-      this.curCommodityList = res
-      console.log(res)
+      this.curCommodityList = res.data
+      console.log(this.curCommodityList)
+    },
+    goToCreateCommodity () {
+      this.$router.push({
+        name: 'commodity-create',
+        query: { shopId: this.curShopId }
+      })
     }
   },
   watch: {
