@@ -60,15 +60,6 @@ const frameIn = [
         component: () => import('@/views/commodity/create')
       },
       {
-        path: 'commodity/update',
-        name: 'commodity-update',
-        meta: {
-          title: '更新商品信息',
-          auth: true
-        },
-        component: () => import('@/views/commodity/update')
-      },
-      {
         path: 'commodity/show-all',
         name: 'show-all-commodities',
         meta: {

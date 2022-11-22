@@ -59,7 +59,7 @@
               <row v-for="(option, optionIndex) in para.options" :key="optionIndex" style="margin-bottom: 22px">
                 <!--可选项名称-->
                 <el-form-item :prop="'para_set.' + paraIndex +'.options.'+ optionIndex +'.value'" :rules="rules.optionName">
-                  <el-input v-model="option.value" style="width: 130px; margin-right: 10px" placeholder="请输入选项名称" > </el-input>
+                  <el-input v-model="option.description" style="width: 130px; margin-right: 10px" placeholder="请输入选项名称" > </el-input>
                 </el-form-item>
                 <!--可选项对应价格-->
                 <el-form-item :prop="'para_set.' + paraIndex +'.options.'+ optionIndex +'.price'" :rules="rules.optionPrice">
@@ -136,7 +136,7 @@ export default {
             name: '',
             options: [
               // para
-              { value: '', price: '' }
+              { description: '', price: '' }
             ]
           }
         ]
@@ -206,7 +206,7 @@ export default {
     addPara () {
       this.form.para_set.push({
         name: '',
-        options: [{ value: '', price: '' }]
+        options: [{ description: '', price: '' }]
       })
     },
     /**
@@ -221,7 +221,7 @@ export default {
      */
     addOption (paraIndex) {
       this.form.para_set[paraIndex].options.push(
-        { value: '', price: '' }
+        { description: '', price: '' }
       )
     },
     /**

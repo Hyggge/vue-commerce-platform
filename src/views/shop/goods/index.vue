@@ -180,21 +180,23 @@
       </el-descriptions>
       <br><br>
       <!--商品具体参数-->
-      <h3 style="margin-left: 10px">商品参数</h3><br>
-      <el-descriptions :column="1"  border>
-        <el-descriptions-item v-for="item in curCommodityDetails.parameters" :key="item.id">
-          <template slot="label">
-            {{item.name}}
-          </template>
-          <el-tag v-for="(option, index) in item.options" :key="option.id" :type="tagTypes[index % 4]" style="margin-right: 10px" >
-            {{`${option.description}(¥${(parseFloat(curCommodityDetails.price) + parseFloat(option.add)).toFixed(2)})`}}
-          </el-tag>
-        </el-descriptions-item>
-      </el-descriptions>
+      <template v-if="curCommodityDetails.parameters === []">
+        <h3 style="margin-left: 10px">商品参数</h3><br>
+        <el-descriptions :column="1"  border>
+          <el-descriptions-item v-for="item in curCommodityDetails.parameters" :key="item.id">
+            <template slot="label">
+              {{item.name}}
+            </template>
+            <el-tag v-for="(option, index) in item.options" :key="option.id" :type="tagTypes[index % 4]" style="margin-right: 10px" >
+              {{`${option.description}(¥${(parseFloat(curCommodityDetails.price) + parseFloat(option.add)).toFixed(2)})`}}
+            </el-tag>
+          </el-descriptions-item>
+        </el-descriptions>
+      </template>
       <!--修改商品信息-->
-      <el-row style="text-align: center">
-        <el-button type="warning" size="small" style="margin-top: 50px" @click="goToUpdateCommodity">修改商品信息</el-button>
-      </el-row>
+      <!--<el-row style="text-align: center">-->
+      <!--  <el-button type="warning" size="small" style="margin-top: 50px" @click="goToUpdateCommodity">修改商品信息</el-button>-->
+      <!--</el-row>-->
     </el-drawer>
   </d2-container>
 </template>
