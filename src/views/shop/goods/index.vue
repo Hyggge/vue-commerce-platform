@@ -40,11 +40,31 @@
       </el-table-column>
       <el-table-column
         prop="discount"
+        label="折扣"
+        align="center"
+        width="120">
+        <template v-slot="scope">
+          {{ scope.row.discount * 100 + '%' }}
+          <el-popover
+            placement="top-start"
+            title="请输入新的商品折扣"
+            width="200"
+            trigger="click">
+            <el-input v-model="newDiscount" placeholder="请输入0~1之间的两位小数"></el-input>
+            <div style="text-align: center">
+              <el-button size="mini" type="primary" style="margin-top: 10px" @click="changeDiscount(scope.row.id)">提交</el-button>
+            </div>
+            <el-link icon="el-icon-edit" style="margin-left: 3px" slot="reference"></el-link>
+          </el-popover>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="discount"
         label="折后价格"
         align="center"
-        width="160">
+        width="120">
         <template v-slot="scope">
-          {{`${(parseFloat(scope.row.price) * (1 - scope.row.discount)).toFixed(2)} (折扣:${scope.row.discount * 100}%)`}}
+          {{`${(parseFloat(scope.row.price) * (1 - scope.row.discount)).toFixed(2)}`}}
         </template>
       </el-table-column>
       <el-table-column
@@ -69,7 +89,22 @@
           <el-tag v-if="scope.row.status === 1" type="warning"><strong>预售中</strong></el-tag>
           <el-tag v-if="scope.row.status === 2" type="success"><strong>售卖中</strong></el-tag>
           <el-tag v-if="scope.row.status === 3" type="info"><strong>已下架</strong></el-tag>
-
+          <el-popover
+            placement="top-start"
+            title="请选择新的商品状态"
+            width="200"
+            trigger="click">
+            <el-select v-model="newStatus" placeholder="请选择">
+              <el-option label="未生效" :value="0"></el-option>
+              <el-option label="预售中" :value="1"></el-option>
+              <el-option label="售卖中" :value="2"></el-option>
+              <el-option label="已下架" :value="3"></el-option>
+            </el-select>
+            <div style="text-align: center">
+              <el-button size="mini" type="primary" style="margin-top: 10px" @click="changeStatus(scope.row.id)">提交</el-button>
+            </div>
+            <el-link icon="el-icon-edit" style="margin-left: 3px" slot="reference"></el-link>
+          </el-popover>
         </template>
       </el-table-column>
       <el-table-column
@@ -208,6 +243,8 @@ export default {
   name: 'shop-goods',
   data () {
     return {
+      newStatus: '',
+      newDiscount: '',
       tagTypes: ['success', 'primary', 'warning', 'danger'],
       drawer: false,
       select: 0,
@@ -230,7 +267,7 @@ export default {
      * 获得商品列表
      */
     async getCommodityList () {
-      const res = await api.GET_COMMODITY_LIST_FOR_SHOP(this.curShopId, 1, {keyword: '' })
+      const res = await api.GET_COMMODITY_LIST_FOR_SHOP(this.curShopId, 1, { keyword: '' })
       this.curCommodityList = res.data
       console.log(this.curCommodityList)
     },
@@ -273,6 +310,26 @@ export default {
         name: 'commodity-update',
         query: { shopId: this.curShopId }
       })
+    },
+    /**
+     * 修改商品状态
+     */
+    async changeStatus (commodityId) {
+      await api.UPDATE_COMMODITY_DETAILS(commodityId, { status: this.newStatus })
+      await this.getCommodityList()
+      this.$Message.success('修改成功！')
+    },
+    /**
+     * 修改商品折扣
+     */
+    async changeDiscount (commodityId) {
+      if (!/^0\.[0-9]{2}$/.test(this.newDiscount)) {
+        this.$Message.error('必须输入0~1之间的两位小数！')
+      } else {
+        // await api.UPDATE_COMMODITY_DETAILS(commodityId, { discount: this.newDiscount })
+        await this.getCommodityList()
+        this.$Message.success('修改成功！')
+      }
     }
   },
   watch: {
@@ -290,7 +347,6 @@ export default {
           this.$Message.warning('您还没有创建店铺!')
         } else {
           this.curShopId = this.shopList[0].id
-          this.getShopDetails()
         }
       })
   }
