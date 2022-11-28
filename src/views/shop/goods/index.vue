@@ -332,7 +332,7 @@ export default {
       }
     },
     /**
-     * 生成实际价格
+     * 根据原价格、折扣、参数加成计算总价格
      */
     formatPrice (oriPrice, discount, addition) {
       return (parseFloat(oriPrice) - parseFloat(discount) + parseFloat(addition)).toFixed(2)

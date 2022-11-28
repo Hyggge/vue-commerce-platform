@@ -2,16 +2,13 @@
   <d2-container>
     <template v-slot:header>
       <h2>{{commodityDetails.name}}</h2>
-      <!--<h2>-->
-      <!--  所属店铺: {{commodityDetails.shop__name}}-->
-      <!--</h2>-->
-    </template>
 
+    </template>
     <el-row style="padding-top: 10px">
       <el-col :span="9" :offset="1">
         <img :src="commodityDetails.img_url" style="border-radius: 20px; width: 100%">
       </el-col>
-      <el-col :span="12" :offset="1">
+      <el-col :span="12" :offset="1" style="margin-top: 15px">
         <!--商品介绍-->
         <h3 style="color: black">
           {{commodityDetails.introduction}}
@@ -53,56 +50,88 @@
           </el-col>
         </el-row>
         <!--商品属性-->
-        <el-row class="term" v-for="(param) in commodityDetails.parameters" :key="param.id">
+        <el-row class="term" v-for="(param, paramIndex) in commodityDetails.parameters" :key="param.id">
           <el-col class="title" :span="3"> {{param.name}}:</el-col>
           <el-col class="content" :span="20">
-            <el-radio-group v-model="radio4" size="mini" disabled>
+            <el-radio-group v-model="selectedOptions[paramIndex]" size="mini">
               <el-radio v-for="option in param.options" :key="option.id"
                         style="margin-right: 10px;"
+                        @change="onClick(paramIndex, option.add)"
                         :label="option.id" border>
               {{option.description}}
               </el-radio>
             </el-radio-group>
-
           </el-col>
         </el-row>
-
       </el-col>
     </el-row>
+    <el-tabs v-model="curPane">
+      <el-tab-pane label="用户评论" name="comments">
+      <comments></comments>
+
+      </el-tab-pane>
+
+    </el-tabs>
   </d2-container>
 </template>
 
 <script>
 import api from '@/api'
+import comments from '@/components/comments'
 
 export default {
   name: 'show-commodity-details-for-user',
+  components: { comments },
   data () {
     return {
-      commodityId: this.$route.params.id,
+      commodityId: '',
       commodityDetails: {},
-      curPrice: '',
-      parameters: {}
+      selectedOptions: [],
+      selectedAdditions: [],
+      curPrice: 0,
+      curPane: 'comments'
     }
   },
   methods: {
+    /**
+     * 获得商品的详细信息
+     */
     async getCommodityDetails () {
-      const res = await api.GET_COMMODITY_DETIALS(this.commodityId)
-      this.commodityDetails = res
-      console.log(res)
+      this.commodityDetails = await api.GET_COMMODITY_DETIALS(this.commodityId)
+      this.commodityDetails.parameters.forEach(() => {
+        this.selectedOptions.unshift(0)
+        this.selectedAdditions.unshift(0)
+      })
+      this.curPrice = this.calcPrice()
+      console.log(this.commodityDetails)
     },
     /**
-     * 生成实际价格
+     * 根据原价格、折扣、参数加成计算总价格
      */
     formatPrice (oriPrice, discount, addition) {
       return (parseFloat(oriPrice) - parseFloat(discount) + parseFloat(addition)).toFixed(2)
+    },
+    /**
+     * 计算实际价格
+     */
+    calcPrice () {
+      let addSum = 0
+      this.selectedAdditions.forEach((value, index) => {
+        addSum += parseFloat(value)
+      })
+      return this.formatPrice(this.commodityDetails.price, this.commodityDetails.discount, addSum)
+    },
+    /**
+     * 点击选项时执行
+     */
+    onClick (paramIndex, addition) {
+      this.selectedAdditions[paramIndex] = addition
+      this.curPrice = this.calcPrice()
     }
   },
   mounted () {
+    this.commodityId = this.$route.params.id
     this.getCommodityDetails()
-      .then(() => {
-        this
-      })
   }
 }
 </script>
