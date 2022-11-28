@@ -144,7 +144,7 @@ export default {
       rules: {
         name: [{ required: true, message: '请输入商品名称', trigger: 'blur' }],
         price: [{ required: true, message: '请输入价格', trigger: 'blur' }, { validator: this.checkPrice, trigger: 'blur' }],
-        discount: [{ required: true, message: '请输入商品折扣', trigger: 'blur' }, { validator: this.checkDiscount, trigger: 'blur' }],
+        discount: [{ required: true, message: '请输入商品优惠', trigger: 'blur' }, { validator: this.checkPrice, trigger: 'blur' }],
         total: [{ required: true, message: '请输入商品总量', trigger: 'blur' }, { validator: this.checkTotal, trigger: 'blur' }],
         method: [{ required: true, message: '请输入交易方式', trigger: 'blur' }],
         status: [{ required: true, message: '请输入商品状态', trigger: 'blur' }],
@@ -238,17 +238,6 @@ export default {
       const regExp = /^[0-9]+\.[0-9]{2}$/
       if (!regExp.test(value)) {
         callback(new Error('必须输入两位小数'))
-      } else {
-        callback()
-      }
-    },
-    /**
-     * 验证折扣是否合法
-     */
-    checkDiscount (rule, value, callback) {
-      const regExp = /^0\.[0-9]{2}$/
-      if (!regExp.test(value)) {
-        callback(new Error('必须输入0-1之间的两位小数'))
       } else {
         callback()
       }

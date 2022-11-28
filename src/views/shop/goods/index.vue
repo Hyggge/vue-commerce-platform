@@ -40,11 +40,11 @@
       </el-table-column>
       <el-table-column
         prop="discount"
-        label="折扣"
+        label="优惠"
         align="center"
         width="120">
         <template v-slot="scope">
-          {{ scope.row.discount * 100 + '%' }}
+          {{ scope.row.discount }}
           <el-popover
             placement="top-start"
             title="请输入新的商品折扣"
@@ -64,7 +64,7 @@
         align="center"
         width="120">
         <template v-slot="scope">
-          {{`${(parseFloat(scope.row.price) * (1 - scope.row.discount)).toFixed(2)}`}}
+          {{formatPrice(scope.row.price, scope.row.discount, 0)}}
         </template>
       </el-table-column>
       <el-table-column
@@ -167,15 +167,15 @@
         </el-descriptions-item>
         <el-descriptions-item>
           <template slot="label">
-            折扣
+            优惠
           </template>
-          {{curCommodityDetails.discount * 100 + ' %'}}
+          {{curCommodityDetails.discount}}
         </el-descriptions-item>
         <el-descriptions-item>
           <template slot="label">
             折后
           </template>
-          {{(curCommodityDetails.price * (1 - curCommodityDetails.discount)).toFixed(2)}}
+          {{formatPrice(curCommodityDetails.price, curCommodityDetails.discount, 0)}}
         </el-descriptions-item>
         <el-descriptions-item>
           <template slot="label">
@@ -215,7 +215,7 @@
       </el-descriptions>
       <br><br>
       <!--商品具体参数-->
-      <template v-if="curCommodityDetails.parameters === []">
+      <template v-if="curCommodityDetails.parameters !== []">
         <h3 style="margin-left: 10px">商品参数</h3><br>
         <el-descriptions :column="1"  border>
           <el-descriptions-item v-for="item in curCommodityDetails.parameters" :key="item.id">
@@ -223,7 +223,7 @@
               {{item.name}}
             </template>
             <el-tag v-for="(option, index) in item.options" :key="option.id" :type="tagTypes[index % 4]" style="margin-right: 10px" >
-              {{`${option.description}(¥${(parseFloat(curCommodityDetails.price) + parseFloat(option.add)).toFixed(2)})`}}
+              {{`${option.description}(¥${formatPrice(curCommodityDetails.price, curCommodityDetails.discount, option.add)})`}}
             </el-tag>
           </el-descriptions-item>
         </el-descriptions>
@@ -323,13 +323,19 @@ export default {
      * 修改商品折扣
      */
     async changeDiscount (commodityId) {
-      if (!/^0\.[0-9]{2}$/.test(this.newDiscount)) {
-        this.$Message.error('必须输入0~1之间的两位小数！')
+      if (!/^[0-9]+\.[0-9]{2}$/.test(this.newDiscount)) {
+        this.$Message.error('必须输入两位小数！')
       } else {
         // await api.UPDATE_COMMODITY_DETAILS(commodityId, { discount: this.newDiscount })
         await this.getCommodityList()
         this.$Message.success('修改成功！')
       }
+    },
+    /**
+     * 生成实际价格
+     */
+    formatPrice (oriPrice, discount, addition) {
+      return (parseFloat(oriPrice) - parseFloat(discount) + parseFloat(addition)).toFixed(2)
     }
   },
   watch: {

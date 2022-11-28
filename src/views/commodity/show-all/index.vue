@@ -7,28 +7,20 @@
     <!--商品列表-->
     <el-row :gutter="30">
       <el-col v-for="commodity in commodityList" :key="commodity.id" :span="6" style="margin-bottom: 20px">
-        <el-card style="height: 400px">
-          <div style="height: 200px">
-            <img :src="commodity.img_url" style="width: 100%; height: 100%">
-          </div>
-          <h4 style="height: 70px; color: grey; margin-top: 10px">
-            {{modifyIntroduction(commodity.introduction)}}
-          </h4>
-          <h2>
-            {{commodity.name}}
-          </h2>
-          <h2 style="color: #ff8226">
-            {{`¥` + (parseFloat(commodity.price) * (1 - commodity.discount)).toFixed(2)}}
-          </h2>
-
-          <!--<div style="padding: 14px;">-->
-          <!--  <span>好吃的汉堡</span>-->
-          <!--  <div class="bottom clearfix">-->
-          <!--    <time class="time">{{ currentDate }}</time>-->
-          <!--    <el-button type="text" class="button">操作按钮</el-button>-->
-          <!--  </div>-->
-          <!--</div>-->
-        </el-card>
+        <div @click="showDetails(commodity.id)">
+          <el-card style="height: 400px; cursor: pointer">
+            <div style="height: 200px">
+              <img :src="commodity.img_url" style="width: 100%; height: 100%">
+            </div>
+            <h4 style="height: 70px; color: grey; margin-top: 10px">
+              {{modifyIntroduction(commodity.introduction)}}
+            </h4>
+            <h2>{{commodity.name}}</h2>
+            <h2 style="color: #ff8226">
+              {{`¥` + (commodity.price - commodity.discount).toFixed(2)}}
+            </h2>
+          </el-card>
+        </div>
       </el-col>
     </el-row>
   </d2-container>
@@ -58,6 +50,9 @@ export default {
       } else {
         return ans + '      '
       }
+    },
+    showDetails (commodityId) {
+      this.$router.push({ path: `/commodity/show-details/${commodityId}` })
     }
   },
   mounted () {

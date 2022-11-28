@@ -69,22 +69,13 @@ const frameIn = [
         component: () => import('@/views/commodity/show-all')
       },
       {
-        path: 'commodity/show-details-for-user',
-        name: 'show-commodity-details-for-user',
+        path: 'commodity/show-details/:id',
+        name: 'show-commodity-details',
         meta: {
           title: '商品详情',
           auth: true
         },
-        component: () => import('@/views/commodity/show-details-for-user')
-      },
-      {
-        path: 'commodity/show-details-for-admin',
-        name: 'show-commodity-details-for-admin',
-        meta: {
-          title: '商品详情',
-          auth: true
-        },
-        component: () => import('@/views/commodity/show-details-for-admin')
+        component: () => import('@/views/commodity/show-details/')
       },
       // 管理员页面
       {
