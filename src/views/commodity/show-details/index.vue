@@ -1,10 +1,10 @@
 <template>
   <d2-container>
-    <template v-slot:header>
-      <h2>{{commodityDetails.name}}</h2>
+    <!--<template v-slot:header>-->
+    <!--  <h2>{{commodityDetails.name}}</h2>-->
 
-    </template>
-    <el-row style="padding-top: 10px">
+    <!--</template>-->
+    <el-row style="margin-top: 10px">
       <el-col :span="9" :offset="1">
         <img :src="commodityDetails.img_url" style="border-radius: 20px; width: 100%">
       </el-col>
@@ -56,22 +56,102 @@
             <el-radio-group v-model="selectedOptions[paramIndex]" size="mini">
               <el-radio v-for="option in param.options" :key="option.id"
                         style="margin-right: 10px;"
-                        @change="onClick(paramIndex, option.add)"
+                        @change="onClickOption(paramIndex, option.add)"
                         :label="option.id" border>
               {{option.description}}
               </el-radio>
             </el-radio-group>
           </el-col>
         </el-row>
+        <!--数量选择框-->
+        <el-row class="term">
+          <el-col class="title" :span="3" style="padding-top: 6px"> 数量:</el-col>
+          <el-col class="content" :span="20">
+            <el-input-number v-model="form.num"
+                             @change="onClickCounter"
+                             :max="commodityDetails.total - commodityDetails.sale"
+                             :min="1" size="mini"></el-input-number>
+          </el-col>
+        </el-row>
+        <!--下单按钮-->
+        <el-button type="danger" round style="margin-top: 20px"
+                   @click="openModal">立即下单</el-button>
       </el-col>
     </el-row>
+    <!--用户评论-->
     <el-tabs v-model="curPane">
       <el-tab-pane label="用户评论" name="comments">
-      <comments></comments>
-
+        <comments></comments>
       </el-tab-pane>
-
     </el-tabs>
+
+    <!--下单对话框-->
+    <Modal
+      v-model="modal"
+      title="请确认订单信息"
+      @on-ok="submitOrder"
+      @on-cancel="$Message.error('取消下单')">
+      <el-descriptions class="margin-top" :column="2" :size="size" border>
+        <!--购买数量-->
+        <el-descriptions-item>
+          <template slot="label">
+            购买数量
+          </template>
+          {{form.num}}
+        </el-descriptions-item>
+        <!--总价格-->
+        <el-descriptions-item>
+          <template slot="label">
+            总价格
+          </template>
+          {{'¥' + curPrice}}
+        </el-descriptions-item>
+        <!--交易方式-->
+        <el-descriptions-item>
+          <template slot="label">
+            交易方式
+          </template>
+          <el-tag v-if="commodityDetails.method === 0" type="success" size="mini"><strong>线上交易</strong></el-tag>
+          <el-tag v-if="commodityDetails.method === 1" type="primary" size="mini"><strong>线下自取</strong></el-tag>
+          <el-tag v-if="commodityDetails.method === 2" type="warning" size="mini"><strong>送货上门</strong></el-tag>
+        </el-descriptions-item>
+        <!--商品状态-->
+        <el-descriptions-item>
+          <template slot="label">
+            商品状态
+          </template>
+          <el-tag v-if="commodityDetails.status === 0" type="primary" size="mini"><strong>未生效</strong></el-tag>
+          <el-tag v-if="commodityDetails.status === 1" type="warning" size="mini"><strong>预售中</strong></el-tag>
+          <el-tag v-if="commodityDetails.status === 2" type="success" size="mini"><strong>售卖中</strong></el-tag>
+          <el-tag v-if="commodityDetails.status === 3" type="info" size="mini"><strong>已下架</strong></el-tag>
+        </el-descriptions-item>
+        <!--参数-->
+        <el-descriptions-item :span="2" v-for="(param, paramIndex) in commodityDetails.parameters" :key="param.id">
+          <template slot="label">
+            {{param.name}}
+          </template>
+          <div v-for="option in param.options" :key="option.id">
+            <el-tag v-if="option.id === selectedOptions[paramIndex]" style="margin-right: 10px" size="mini" >
+              {{`${option.description}`}}
+            </el-tag>
+          </div>
+        </el-descriptions-item>
+        <!--交易地址-->
+        <el-descriptions-item :span="2">
+          <template slot="label">
+            地址
+          </template>
+          <el-input v-model="form.address" placeholder="请输入交易地址（可选）"></el-input>
+        </el-descriptions-item>
+        <!--备注-->
+        <el-descriptions-item :span="2">
+          <template slot="label">
+            备注
+          </template>
+          <el-input type="textarea" v-model="form.note" placeholder="请输入备注（可选）"></el-input>
+        </el-descriptions-item>
+      </el-descriptions>
+    </Modal>
   </d2-container>
 </template>
 
@@ -89,7 +169,13 @@ export default {
       selectedOptions: [],
       selectedAdditions: [],
       curPrice: 0,
-      curPane: 'comments'
+      curPane: 'comments',
+      modal: false,
+      form: {
+        num: 1,
+        address: '',
+        note: ''
+      }
     }
   },
   methods: {
@@ -108,8 +194,8 @@ export default {
     /**
      * 根据原价格、折扣、参数加成计算总价格
      */
-    formatPrice (oriPrice, discount, addition) {
-      return (parseFloat(oriPrice) - parseFloat(discount) + parseFloat(addition)).toFixed(2)
+    formatPrice (oriPrice, discount, addition, num) {
+      return (num * (parseFloat(oriPrice) - parseFloat(discount) + parseFloat(addition))).toFixed(2)
     },
     /**
      * 计算实际价格
@@ -119,14 +205,48 @@ export default {
       this.selectedAdditions.forEach((value, index) => {
         addSum += parseFloat(value)
       })
-      return this.formatPrice(this.commodityDetails.price, this.commodityDetails.discount, addSum)
+      return this.formatPrice(this.commodityDetails.price, this.commodityDetails.discount, addSum, this.form.num)
     },
     /**
      * 点击选项时执行
      */
-    onClick (paramIndex, addition) {
+    onClickOption (paramIndex, addition) {
       this.selectedAdditions[paramIndex] = addition
       this.curPrice = this.calcPrice()
+    },
+    /**
+     * 点击计数器时执行
+     */
+    onClickCounter () {
+      this.curPrice = this.calcPrice()
+    },
+    /**
+     * 打开确认订单信息的对话框
+     * 再打开之前先检查用户是否选择了所有的参数
+     */
+    openModal () {
+      // 检查用户是否选择了所有的参数
+      for (const value of this.selectedOptions) {
+        console.log(value)
+        if (value === 0) {
+          this.$Message.error('参数选择不全！')
+          return
+        }
+      }
+      // 打开对话框
+      this.modal = true
+    },
+    /**
+     * 下单
+     */
+    submitOrder () {
+      const select_paras = []
+      this.selectedOptions.forEach((value, index) => {
+        if (value !== 0) select_paras.push(value)
+      })
+      Object.assign(this.form, { select_paras })
+      api.SUBMIT_ORDER(this.commodityId, this.form)
+      this.$Message.success('下单成功')
     }
   },
   mounted () {
