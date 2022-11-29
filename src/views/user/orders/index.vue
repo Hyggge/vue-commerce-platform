@@ -167,11 +167,21 @@
         <template v-slot="scope">
           <div v-if="scope.$index === 0"></div>
           <div v-else>
-            <el-row style="margin-top: 10px"><el-button type="primary" size="mini">查看详情</el-button></el-row>
-            <el-row v-if="scope.row.status === 0" style="margin-top: 10px"><el-button type="danger" size="mini">撤销订单</el-button></el-row>
-            <el-row v-if="scope.row.status === 0" style="margin-top: 10px"><el-button type="warning" size="mini">支付订单</el-button></el-row>
-            <el-row v-if="scope.row.status === 2" style="margin-top: 10px"><el-button type="success" size="mini">确认收货</el-button></el-row>
-            <el-row v-if="scope.row.status === 3" style="margin-top: 10px"><el-button type="warning" size="mini">去评价</el-button></el-row>
+            <el-row style="margin-top: 10px">
+              <el-button type="primary" size="mini" @click="getOrderDetails(scope.row.id)">查看详情</el-button>
+            </el-row>
+            <el-row v-if="scope.row.status === 0" style="margin-top: 10px">
+              <el-button type="danger" size="mini" @click="closeOrder(scope.row.id)">撤销订单</el-button>
+            </el-row>
+            <el-row v-if="scope.row.status === 0" style="margin-top: 10px">
+              <el-button type="warning" size="mini" @click="payOrder(scope.row.id)">支付订单</el-button>
+            </el-row>
+            <el-row v-if="scope.row.status === 2" style="margin-top: 10px">
+              <el-button type="success" size="mini" @click="confirmOrder(scope.row.id)">确认收货</el-button>
+            </el-row>
+            <el-row v-if="scope.row.status === 3" style="margin-top: 10px">
+              <el-button type="warning" size="mini" @click="commentOrder(scope.row.id)">去评价</el-button>
+            </el-row>
           </div>
         </template>
       </el-table-column>
@@ -190,6 +200,101 @@
         style="text-align: center">
       </el-pagination>
     </div>
+
+    <el-drawer
+      title="订单详情"
+      :visible.sync="drawer"
+      direction="rtl">
+      <!--商品图片-->
+      <img :src="curOrderDetails.image_url" style="width: 100%; margin-bottom: 10px" alt="">
+
+      <el-descriptions :column="2"  border>
+        <el-descriptions-item :span="2">
+          <template slot="label">
+            商品名称
+          </template>
+          {{curOrderDetails.commodity__name}}
+        </el-descriptions-item>
+        <el-descriptions-item :span="2">
+          <template slot="label">
+            店铺名称
+          </template>
+          {{curOrderDetails.commodity__shop__name}}
+        </el-descriptions-item>
+        <el-descriptions-item :span="2">
+          <template slot="label">
+            购买数量
+          </template>
+          {{curOrderDetails.num}}
+        </el-descriptions-item>
+        <el-descriptions-item :span="2">
+          <template slot="label">
+            购买金额
+          </template>
+          {{curOrderDetails.price}}
+        </el-descriptions-item>
+        <el-descriptions-item :span="2">
+          <template slot="label">
+            交易状态
+          </template>
+          <el-tag v-if="curOrderDetails.status == 0" type="warning" size="mini">已下单</el-tag>
+          <el-tag v-if="curOrderDetails.status == 1" type="primary" size="mini">已支付</el-tag>
+          <el-tag v-if="curOrderDetails.status == 2" type="warning" size="mini">已发货</el-tag>
+          <el-tag v-if="curOrderDetails.status == 3" type="success" size="mini">已收货</el-tag>
+          <el-tag v-if="curOrderDetails.status == 4" type="success" size="mini">已评价</el-tag>
+          <el-tag v-if="curOrderDetails.status == 5" type="info" size="mini">已关闭</el-tag>
+        </el-descriptions-item>
+        <el-descriptions-item :span="2">
+          <template slot="label">
+            交易地址
+          </template>
+          {{curOrderDetails.address === '' ? '无' : curOrderDetails.address}}
+        </el-descriptions-item>
+        <el-descriptions-item :span="2">
+          <template slot="label">
+            备注
+          </template>
+          {{curOrderDetails.note === '' ? '无' : curOrderDetails.note}}
+        </el-descriptions-item>
+        <el-descriptions-item v-if="curOrderDetails.status >= 0" :span="2">
+          <template slot="label">
+            下单时间
+          </template>
+          {{curOrderDetails.start_time === null ? '无' : curOrderDetails.start_time }}
+        </el-descriptions-item>
+        <el-descriptions-item v-if="curOrderDetails.status >= 1 && curOrderDetails.status !== 5" :span="2">
+          <template slot="label">
+            支付时间
+          </template>
+          {{curOrderDetails.pay_time === null ? '无' : curOrderDetails.pay_time }}
+        </el-descriptions-item>
+        <el-descriptions-item v-if="curOrderDetails.status >= 2 && curOrderDetails.status !== 5" :span="2">
+          <template slot="label">
+            发货时间
+          </template>
+          {{curOrderDetails.deliver_time === null ? '无' : curOrderDetails.deliver_time }}
+        </el-descriptions-item>
+        <el-descriptions-item v-if="curOrderDetails.status >= 3 && curOrderDetails.status !== 5" :span="2">
+          <template slot="label">
+            收货时间
+          </template>
+          {{curOrderDetails.confirm_time === null ? '无' : curOrderDetails.confirm_time }}
+        </el-descriptions-item>
+        <el-descriptions-item v-if=" curOrderDetails.status === 5" :span="2">
+          <template slot="label">
+            关闭时间
+          </template>
+          {{curOrderDetails.close_time === null ? '无' : curOrderDetails.close_time }}
+        </el-descriptions-item>
+
+      </el-descriptions>
+
+
+    </el-drawer>
+
+
+
+
   </d2-container>
 
 </template>
@@ -201,10 +306,10 @@ export default {
   name: 'user-orders',
   data () {
     return {
-      // 状态数组
-      statusList: ['已下单', '已支付', '已发货', '已收货', '已评价', '已关闭'],
-      // tag类型数组
-      tagTypeList: ['danger', 'success', 'primary', 'warning', 'success', 'info'],
+      // 抽屉
+      drawer: false,
+      // 正在展示的订单详情
+      curOrderDetails: {},
       // 用户输入的查询信息
       query: {
         commodityName: '',
@@ -391,6 +496,59 @@ export default {
       }
       this.currentPage = 1
       this.queryOrders()
+    },
+    /**
+     * 获得订单详情
+     */
+    async getOrderDetails (orderId) {
+      this.drawer = true;
+      this.curOrderDetails = await api.GET_ORDER_DETAILS(orderId)
+      console.log(this.curOrderDetails)
+    },
+    /**
+     * 关闭订单
+     */
+    async closeOrder (orderId) {
+      await this.$confirm('是否关闭订单', '提示', {
+        confirmButtonText: '是',
+        cancelButtonText: '否',
+        type: 'warning'
+      })
+      await api.CLOSE_ORDER(orderId)
+      await this.queryOrders()
+      this.$Message.success('关闭成功！')
+    },
+    /**
+     * 支付订单
+     */
+    async payOrder (orderId) {
+      await this.$confirm('是否支付订单', '提示', {
+        confirmButtonText: '是',
+        cancelButtonText: '否',
+        type: 'warning'
+      })
+      await api.PAY_ORDER(orderId)
+      await this.queryOrders()
+      this.$Message.success('支付成功！')
+    },
+    /**
+     * 确认收货
+     */
+    async confirmOrder (orderId) {
+      await this.$confirm('是否确认收货', '提示', {
+        confirmButtonText: '是',
+        cancelButtonText: '否',
+        type: 'warning'
+      })
+      await api.CONFIRM_RECEIVED(orderId)
+      await this.queryOrders()
+      this.$Message.success('关闭成功！')
+    },
+    /**
+     * TODO: 评价订单
+     */
+    async commentOrder (orderId) {
+      // TODO
     }
   },
   mounted () {

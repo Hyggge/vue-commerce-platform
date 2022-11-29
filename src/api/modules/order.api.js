@@ -11,7 +11,7 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
   GET_ORDER_DETAILS (orderId) {
     return request({
       url: `/order/${orderId}`,
-      method: 'post'
+      method: 'get'
     })
   },
 
