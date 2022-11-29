@@ -180,7 +180,7 @@
               <el-button type="success" size="mini" @click="confirmOrder(scope.row.id)">确认收货</el-button>
             </el-row>
             <el-row v-if="scope.row.status === 3" style="margin-top: 10px">
-              <el-button type="warning" size="mini" @click="commentOrder(scope.row.id)">去评价</el-button>
+              <el-button type="warning" size="mini" @click="modal = true; orderToComment =scope.row.id">去评价</el-button>
             </el-row>
           </div>
         </template>
@@ -289,12 +289,27 @@
         </el-descriptions-item>
 
       </el-descriptions>
-
-
     </el-drawer>
 
+    <!--评论弹框-->
 
-
+    <Modal
+      v-model="modal"
+      title="请输入你的评价"
+      @on-ok="commentOrder">
+      <el-form :model="comment">
+        <el-form-item label="评分" required>
+          <el-rate
+            style="margin-top: 10px"
+            v-model="comment.grade"
+            show-text>
+          </el-rate>
+        </el-form-item>
+        <el-form-item label="內容">
+          <el-input v-model="comment.content" type="textarea"></el-input>
+        </el-form-item>
+      </el-form>
+    </Modal>
 
   </d2-container>
 
@@ -307,10 +322,6 @@ export default {
   name: 'user-orders',
   data () {
     return {
-      // 抽屉
-      drawer: false,
-      // 正在展示的订单详情
-      curOrderDetails: {},
       // 用户输入的查询信息
       query: {
         commodityName: '',
@@ -332,7 +343,21 @@ export default {
         price: null
       },
       // 表格数据
-      tableData: [{}]
+      tableData: [{}],
+      // 评论弹框
+      modal: false,
+      // 将要评论的订单id
+      orderToComment: '',
+      // 评论
+      comment: {
+        grade: '',
+        content: '',
+        images: []
+      },
+      // 抽屉
+      drawer: false,
+      // 正在展示的订单详情
+      curOrderDetails: {}
     }
   },
   methods: {
@@ -487,7 +512,7 @@ export default {
      * 获得订单详情
      */
     async getOrderDetails (orderId) {
-      this.drawer = true;
+      this.drawer = true
       this.curOrderDetails = await api.GET_ORDER_DETAILS(orderId)
       console.log(this.curOrderDetails)
     },
@@ -531,10 +556,16 @@ export default {
       this.$Message.success('关闭成功！')
     },
     /**
-     * TODO: 评价订单
+     * 评价订单
      */
-    async commentOrder (orderId) {
-      // TODO
+    async commentOrder () {
+      if (this.comment.grade === '' || this.comment.grade === null || this.comment.grade === 0) {
+        this.$Message.error('评分不能为空！')
+        return
+      }
+      await api.SUBMIT_COMMENT(this.orderToComment, this.comment)
+      await this.queryOrders()
+      this.$Message.success('评价成功！')
     }
   },
   mounted () {

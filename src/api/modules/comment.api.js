@@ -1,10 +1,11 @@
 
 export default ({ service, request, serviceForMock, requestForMock, mock, faker, tools }) => ({
 
-  SUBMIT_COMMENT (orderId) {
+  SUBMIT_COMMENT (orderId, data) {
     return request({
       url: `/order/comment/${orderId}`,
-      method: 'post'
+      method: 'post',
+      data
     })
   },
 
