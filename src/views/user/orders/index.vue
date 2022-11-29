@@ -116,7 +116,7 @@
               <el-option label="已下单" :value="0"></el-option>
               <el-option label="已支付" :value="1"></el-option>
               <el-option label="已发货" :value="2"></el-option>
-              <el-option label="已确认" :value="3"></el-option>
+              <el-option label="已收货" :value="3"></el-option>
               <el-option label="已评价" :value="4"></el-option>
               <el-option label="已关闭" :value="5"></el-option>
             </el-select>

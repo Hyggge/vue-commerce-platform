@@ -37,7 +37,7 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
     })
   },
 
-  DELIVER_ORDER (orderId) {
+  DELIVER_COMMODITY (orderId) {
     return request({
       url: `/order/deliver/${orderId}`,
       method: 'post'
