@@ -203,6 +203,7 @@
       </el-pagination>
     </div>
 
+    <!--抽屉-->
     <el-drawer
       title="订单详情"
       :visible.sync="drawer"
@@ -233,7 +234,7 @@
           <template slot="label">
             购买金额
           </template>
-          {{curOrderDetails.price}}
+          {{'¥' + curOrderDetails.price}}
         </el-descriptions-item>
         <el-descriptions-item :span="2">
           <template slot="label">
@@ -333,22 +334,7 @@ export default {
         price: null
       },
       // 表格数据
-      tableData: [{},
-        {
-          id: 9,
-          commodity_id: 1,
-          commodity__name: '电脑',
-          commodity__price: '5000.00',
-          commodity__shop_id: 1,
-          commodity__shop__name: '电脑',
-          num: 1,
-          price: '5000.00',
-          status: 5,
-          start_time: '2022-11-20T02:21:06.660Z',
-          img_url: 'http://39.105.118.198:9001/database-project/1/1668881213896/%E5%95%86%E5%93%81%E5%9B%BE%E7%89%871.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=xjh_buaa%2F20221129%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20221129T074019Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=74435fe094ed1f07cc4943ef40caabee4a709449bc6d93c9aa60fb30eacb46dd',
-          select_paras: ['黑色', '24寸']
-        }
-      ]
+      tableData: [{}]
     }
   },
   methods: {
