@@ -105,7 +105,7 @@
         hi
         background
         layout="prev, pager, next,jumper, ->, total, slot"
-        :total="filterCnt"
+        :total="filterTotalCnt"
         @current-change="handleCurrentChange"
         :current-page="currentPage"
         :page-size="10"
@@ -131,7 +131,7 @@ export default {
       // 当前页面
       currentPage: 1,
       // 筛选之后的记录总数
-      filterCnt: 0,
+      filterTotalCnt: 0,
       // 筛选器和排序规则，用于构造请求的params
       filter: {},
       order_by: {
@@ -156,7 +156,7 @@ export default {
           console.log(data)
           this.tableData = data.data
           this.tableData.unshift({})
-          this.filterCnt = data.filter_count
+          this.filterTotalCnt = data.filter_count
         }).catch((err) => {
           console.log(err.response.data)
         })
