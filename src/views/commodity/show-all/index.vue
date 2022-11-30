@@ -10,8 +10,8 @@
           placeholder="请输入想过搜索的商品名称"
           style="width: 500px; cursor: pointer"
           @keyup.enter.native="queryCommodities"
-          @change="queryCommodities"
         ></el-input>
+        <el-button type="danger" style="margin-left: 10px" @click="queryCommodities">搜索</el-button>
       </div>
     </template>
 

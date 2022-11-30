@@ -31,9 +31,12 @@ export const menuAside = supplementPath([
     icon: 'shopping-cart'
   },
   {
-    path: '/article/show-all',
     title: '种草分享',
-    icon: 'bookmark'
+    icon: 'bookmark',
+    children: [
+      { path: '/article/show-all', title: '所有文章', icon: 'tags' },
+      { path: '/article/create', title: '写文章', icon: 'file-text' }
+    ]
   },
   {
     path: '/user/orders',
@@ -47,7 +50,7 @@ export const menuAside = supplementPath([
       { path: '/shop/details', title: '店铺信息', icon: 'balance-scale' },
       { path: '/shop/goods', title: '店铺商品', icon: 'shopping-bag' },
       { path: '/shop/orders', title: '店铺订单', icon: 'rocket' },
-      { path: '/shop/create', title: '创建店铺', icon: 'rocket' }
+      { path: '/shop/create', title: '创建店铺', icon: 'cube' }
     ]
   },
   {
@@ -62,7 +65,7 @@ export const menuAside = supplementPath([
       { path: '/admin/show-users', title: '用户列表', icon: 'bar-chart' },
       { path: '/admin/show-shops', title: '店铺列表', icon: 'line-chart' },
       { path: '/admin/show-orders', title: '订单列表', icon: 'line-chart' },
-      { path: '/admin/show-user-certifications', title: '学生认证请求列表', icon: 'line-chart' },
+      { path: '/admin/show-user-certifications', title: '学生认证请求列表', icon: 'line-chart' }
     ]
   }
 ])

@@ -9,9 +9,9 @@
           v-model="query.keyword"
           placeholder="搜索文章"
           style="width: 500px; cursor: pointer"
-          @change="queryArticlesByKeyword"
           @keyup.enter.native="queryArticlesByKeyword"
         ></el-input>
+        <el-button type="warning" style="margin-left: 10px" @click="queryArticlesByKeyword">搜索</el-button>
       </div>
     </template>
     <el-form :inline="true" :model="filter"
