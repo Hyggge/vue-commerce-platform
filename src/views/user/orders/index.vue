@@ -338,11 +338,7 @@ export default {
       filterTotalCnt: 0,
       // 筛选器和排序规则，用于构造请求的params
       filter: {},
-      orderBy: {
-        num: null,
-        start_time: null,
-        price: null
-      },
+      orderBy: '',
       // 表格数据
       tableData: [{}],
       // 评论弹框
@@ -367,22 +363,16 @@ export default {
      * 获取用户自己的所有订单
      */
     async queryOrders () {
-      // 找出所有的order选项
-      const list = []
-      for (const x of ['num', 'start_time', 'price']) {
-        if (this.orderBy[x] !== null) {
-          list.push(this.orderBy[x])
-        }
-      }
       // 构造params
       const params = {
         ...this.filter,
         page: this.currentPage
       }
       // 将order_by加入params
-      if (list.length !== 0) {
-        params.order_by = list.join('+')
-        console.log(params.order_by)
+      if (this.orderBy !== null && this.orderBy !== '') {
+        params.order_by = this.orderBy
+      } else {
+        params.order_by = '-start_time' // 默认通过下单时间降序排序
       }
       // 发送请求
       const res = await api.GET_ORDER_LIST_FOR_USER(params)
@@ -406,29 +396,29 @@ export default {
     handleSortChange (value) {
       if (value.prop === 'num') {
         if (value.order === 'ascending') {
-          this.orderBy.num = 'num'
+          this.orderBy = 'num'
         } else if (value.order === 'descending') {
-          this.orderBy.num = '-num'
+          this.orderBy = '-num'
         } else {
-          this.orderBy.num = null
+          this.orderBy = null
         }
       }
       if (value.prop === 'price') {
         if (value.order === 'ascending') {
-          this.orderBy.price = 'price'
+          this.orderBy = 'price'
         } else if (value.order === 'descending') {
-          this.orderBy.price = '-price'
+          this.orderBy = '-price'
         } else {
-          this.orderBy.price = null
+          this.orderBy = null
         }
       }
       if (value.prop === 'start_time') {
         if (value.order === 'ascending') {
-          this.orderBy.start_time = 'start_time'
+          this.orderBy = 'start_time'
         } else if (value.order === 'descending') {
-          this.orderBy.start_time = '-start_time'
+          this.orderBy = '-start_time'
         } else {
-          this.orderBy.start_time = null
+          this.orderBy = null
         }
       }
       console.log(this.orderBy)
