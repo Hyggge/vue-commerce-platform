@@ -4,7 +4,12 @@
 
 <script>
 export default {
-  name: 'article-create'
+  name: 'article-create',
+  data () {
+    return {
+      articleId: this.$route.params.id
+    }
+  }
 }
 </script>
 

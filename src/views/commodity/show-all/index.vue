@@ -9,8 +9,8 @@
           v-model="query.keyword"
           placeholder="请输入想过搜索的商品名称"
           style="width: 500px; cursor: pointer"
-          @keyup.enter.native="queryCommoditiesByKeyword"
-          @change="queryCommoditiesByKeyword"
+          @keyup.enter.native="queryCommodities"
+          @change="queryCommodities"
         ></el-input>
       </div>
     </template>
@@ -37,7 +37,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="排序规则">
-        <el-select v-model="orderBy" placeholder="请选择" clearable @change="queryCommoditiesByKeyword">
+        <el-select v-model="orderBy" placeholder="请选择" clearable @change="queryCommodities">
           <el-option label="价格升序" :value="0"> </el-option>
           <el-option label="价格降序" :value="1"> </el-option>
           <el-option label="销量升序" :value="2"> </el-option>
@@ -137,6 +137,7 @@ export default {
     async queryCommodities () {
       console.log(this.orderBy)
       const data = {
+        keyword: this.query.keyword, // keyword字段是必须的
         ...this.filter
       }
       // 加入排序规则
@@ -154,14 +155,6 @@ export default {
       this.commodityList = res.data
       this.filterTotalCnt = res.tot_count
       console.log(res)
-    },
-    /**
-     * 根据用户输入的关键字进行查询
-     */
-    queryCommoditiesByKeyword () {
-      Object.assign(this.filter, { keyword: this.query.keyword })
-      this.currentPage = 1
-      this.queryCommodities()
     },
     /**
      * 根据用户输入的最小价格进行查询
@@ -195,7 +188,7 @@ export default {
       if (this.query.status.length !== 0) {
         Object.assign(this.filter, { status: this.query.status })
       } else {
-        delete this.filter.status
+        this.filter.status = [1, 2]
       }
       this.currentPage = 1
       this.queryCommodities()
@@ -240,7 +233,8 @@ export default {
     }
   },
   mounted () {
-    this.queryCommoditiesByKeyword()
+    this.filter.status = [1, 2] // 只允许预售和在售的商品出现
+    this.queryCommodities()
   }
 }
 </script>
