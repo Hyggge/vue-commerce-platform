@@ -81,7 +81,7 @@
     <!--用户评论-->
     <el-tabs v-model="curPane">
       <el-tab-pane label="用户评论" name="comments">
-        <comments></comments>
+        <comments :commodityId="commodityId"></comments>
       </el-tab-pane>
     </el-tabs>
 
@@ -164,7 +164,7 @@ export default {
   components: { comments },
   data () {
     return {
-      commodityId: '',
+      commodityId: this.$route.params.id,
       commodityDetails: {},
       selectedOptions: [],
       selectedAdditions: [],
@@ -250,7 +250,6 @@ export default {
     }
   },
   mounted () {
-    this.commodityId = this.$route.params.id
     this.getCommodityDetails()
   }
 }

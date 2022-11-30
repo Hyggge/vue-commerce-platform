@@ -81,7 +81,7 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
     return request({
       url: 'comm/list',
       method: 'post',
-      params: { page },
+      params: { page, page_size: 12 },
       data
     })
   },
