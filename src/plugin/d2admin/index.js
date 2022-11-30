@@ -12,6 +12,8 @@ import '@/components'
 import '@/assets/svg-icons'
 // 国际化
 import i18n from '@/i18n.js'
+// 复制内容到剪切板
+import VueClipboard from 'vue-clipboard2'
 
 // 功能插件
 import pluginApi from '@/plugin/api'
@@ -42,5 +44,6 @@ export default {
     Vue.use(pluginLog)
     Vue.use(pluginOpen)
     Vue.use(ViewUI)
+    Vue.use(VueClipboard)
   }
 }

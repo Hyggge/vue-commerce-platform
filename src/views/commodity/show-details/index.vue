@@ -76,11 +76,13 @@
         <!--下单按钮-->
         <el-button type="danger" round style="margin-top: 20px"
                    @click="openModal">立即下单</el-button>
+        <el-button type="primary" round style="margin-top: 20px"
+                   @click="copyLink">复制链接</el-button>
       </el-col>
     </el-row>
     <!--用户评论-->
     <el-tabs v-model="curPane">
-      <el-tab-pane label="用户评论" name="comments">
+      <el-tab-pane label="用户评价" name="comments">
         <comments :commodityId="commodityId"></comments>
       </el-tab-pane>
     </el-tabs>
@@ -247,6 +249,13 @@ export default {
       Object.assign(this.form, { select_paras })
       api.SUBMIT_ORDER(this.commodityId, this.form)
       this.$Message.success('下单成功')
+    },
+    /**
+     * 复制当前商品链接
+     */
+    async copyLink () {
+      await this.$copyText(window.location.href)
+      this.$Message.success('已经成功复制到剪切板！')
     }
   },
   mounted () {

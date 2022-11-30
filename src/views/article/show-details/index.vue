@@ -5,7 +5,10 @@
       <div class="info">
         <span class="author">作者: {{articleDetails.user__nickname}}</span>
         <span class="time">发布时间: {{formatTime(articleDetails.post_time)}}</span>
-        <el-button class="link" size="mini" type="primary" @click="showCommodityDetails"> 商品传送门 </el-button>
+      </div>
+      <div class="btn">
+        <el-button class="link" size="mini" type="danger" @click="showCommodityDetails"> 商品传送门 </el-button>
+        <el-button class="link" size="mini" type="primary" @click="copyLink"> 复制文章连接 </el-button>
       </div>
     </template>
 
@@ -53,6 +56,13 @@ export default {
      */
     showCommodityDetails () {
       this.$router.push({ path: `/commodity/show-details/${this.articleDetails.commodity.id}`})
+    },
+    /**
+     * 复制当前商品链接
+     */
+    async copyLink () {
+      await this.$copyText(window.location.href)
+      this.$Message.success('已经成功复制到剪切板！')
     }
   },
   mounted () {
@@ -70,6 +80,11 @@ export default {
 }
 .info {
   text-align: center;
+}
+
+.btn {
+  text-align: center;
+  margin-top: 10px;
 }
 
 .author {
