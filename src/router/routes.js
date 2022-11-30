@@ -41,7 +41,7 @@ const frameIn = [
         component: () => import('@/views/article/show-all')
       },
       {
-        path: 'article/show-details',
+        path: 'article/show-details/:id',
         name: 'show-article-details',
         meta: {
           title: '种草分享',

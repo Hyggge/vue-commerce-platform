@@ -24,7 +24,7 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
     })
   },
 
-  GET_ARTICLE_LIST_FOR_USER (articleId, params) {
+  GET_ARTICLE_LIST_FOR_USER (params) {
     return request({
       url: '/article/list',
       method: 'get',
