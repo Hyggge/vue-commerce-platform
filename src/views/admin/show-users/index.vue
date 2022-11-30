@@ -1,4 +1,3 @@
-<script src="../../../router/routes.js"></script>
 <template>
   <d2-container>
     <template v-slot:header>
@@ -95,7 +94,7 @@
               placeholder="选择日期">
             </el-date-picker>
           </div>
-          <div v-else>{{ (scope.row.reg_time.split('T').join('  ').split(/[.Z]/)[0]) }}</div>
+          <div v-else>{{ formatTime(scope.row.reg_time)  }}</div>
         </template>
       </el-table-column>
     </el-table>
@@ -117,6 +116,7 @@
 
 <script>
 import api from '@/api'
+import util from '@/libs/util'
 
 export default {
   name: 'show-users',
@@ -142,6 +142,7 @@ export default {
     }
   },
   methods: {
+    formatTime: util.time.formatTime,
     /**
      * 根据curPage,filter,sort_by构造params，并发送请求
      */

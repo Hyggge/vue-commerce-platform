@@ -113,7 +113,7 @@
               placeholder="选择日期">
             </el-date-picker>
           </div>
-          <div v-else>{{ (scope.row.req_time.split('T').join('  ').split(/[.Z]/)[0]) }}</div>
+          <div v-else>{{ formatTime(scope.row.req_time) }}</div>
         </template>
       </el-table-column>
       <el-table-column
@@ -218,6 +218,7 @@
 <script>
 import api from '@/api'
 import { getDepartNameById } from "@/libs/util.depart";
+import util from '@/libs/util'
 
 export default {
   name: 'show-user-certifications',
@@ -252,6 +253,7 @@ export default {
   },
   methods: {
     getDepartNameById,
+    formatTime: util.time.formatTime,
     /**
      * 查看审批状态详情并进行审批
      */

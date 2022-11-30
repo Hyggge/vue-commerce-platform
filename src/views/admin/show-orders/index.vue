@@ -175,7 +175,7 @@
             </el-date-picker>
           </div>
           <div v-else>
-            {{scope.row.start_time.split('T').join('  ').split(/[.Z]/)[0]}}
+            {{ formatTime(scope.row.start_time) }}
           </div>
         </template>
       </el-table-column>
@@ -314,6 +314,7 @@
 
 <script>
 import api from '@/api'
+import util from '@/libs/util'
 
 export default {
   name: 'show-orders',
@@ -354,6 +355,7 @@ export default {
     }
   },
   methods: {
+    formatTime: util.time.formatTime,
     /**
      * 获取用户自己的所有订单
      */

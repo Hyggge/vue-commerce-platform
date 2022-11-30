@@ -138,7 +138,7 @@
           align="center"
           width="180">
           <template v-slot="scope">
-            {{scope.row.req_time.split('T').join(' ').split('.')[0]}}
+            {{ formatTime(scope.row.req_time) }}
           </template>
         </el-table-column>
         <el-table-column
@@ -168,6 +168,7 @@
 import { mapState, mapActions } from 'vuex'
 import { getDepartNameById } from "@/libs/util.depart";
 import api from '@/api'
+import util from '@/libs/util'
 
 export default {
   name: 'user-details',
@@ -176,7 +177,7 @@ export default {
       auth: 'info'
     })
   },
-  data() {
+  data () {
     return {
       drawer: false,
       status: 0,
@@ -187,6 +188,7 @@ export default {
     }
   },
   methods: {
+    formatTime: util.time.formatTime,
     /**
      * 通过院系号码获得院系名称
      */
@@ -234,11 +236,11 @@ export default {
     /**
      * 用户发出认证申请
      */
-    certificate() {
+    certificate () {
       this.$router.push({name: 'user-certificate'})
     }
   },
-  mounted() {
+  mounted () {
     this.getUserInfo()
     this.getReqList()
   }
