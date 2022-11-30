@@ -13,8 +13,7 @@
     </template>
 
     <!--文章内容-->
-    <div class="content">
-      {{articleDetails.content}}
+    <div v-html="articleDetails.content" class="markdown-body" style="padding:20px">
     </div>
 
     <!--用户回复-->
@@ -31,6 +30,7 @@
 import api from '@/api'
 import util from '@/libs/util'
 import reply from '@/components/reply'
+import 'github-markdown-css'
 
 export default {
   name: 'show-article-details',
@@ -55,7 +55,11 @@ export default {
      * 跳转到商品详情页面
      */
     showCommodityDetails () {
-      this.$router.push({ path: `/commodity/show-details/${this.articleDetails.commodity.id}`})
+      if (this.articleDetails.commodity === null) {
+        this.$Message.error('该文章没有关联商品！')
+      } else {
+        this.$router.push({ path: `/commodity/show-details/${this.articleDetails.commodity.id}` })
+      }
     },
     /**
      * 复制当前商品链接
@@ -72,6 +76,7 @@ export default {
 </script>
 
 <style scoped>
+
 .title {
   text-align: center;
   font-size: 40px;
@@ -101,7 +106,7 @@ export default {
 }
 
 .reply {
-  margin-top: 100px;
+  margin-top: 10px;
 }
 
 </style>

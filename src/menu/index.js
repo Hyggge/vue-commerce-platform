@@ -35,7 +35,7 @@ export const menuAside = supplementPath([
     icon: 'bookmark',
     children: [
       { path: '/article/show-all', title: '所有文章', icon: 'tags' },
-      { path: '/article/create', title: '写文章', icon: 'file-text' }
+      { path: '/article/create', title: '写文章', icon: 'pencil' }
     ]
   },
   {
