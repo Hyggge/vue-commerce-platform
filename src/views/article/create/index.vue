@@ -13,7 +13,7 @@
       </div>
     </template>
     <el-input size="mini" placeholder="请输入推荐的商品连接...(非必要)" v-model="article.commodityUrl"></el-input>
-    <mavon-editor v-model="article.content" ref=md class="editor" @imgAdd="imgAdd" @imgDel="imgDel"/>
+    <mavon-editor v-model="article.content" ref=md class="editor" @imgAdd="imgAdd" @imgDel="imgDel" @change="changeContent"/>
   </d2-container>
 </template>
 
@@ -29,6 +29,7 @@ export default {
       article: {
         title: '',
         content: '',
+        render: '',
         commodityUrl: ''
       }
     }
@@ -38,6 +39,7 @@ export default {
      * 发布文章
      */
     async createArticle () {
+      console.log(this.article.content)
       if (this.article.title === '') {
         this.$Message.error('文章标题不能为空！')
       } else if (this.article.content === '') {
@@ -72,6 +74,14 @@ export default {
      */
     async imgDel (pos) {
       // DO NOTHING
+    },
+    /**
+     * 实时获取渲染后的文档
+     */
+    changeContent (value, render) {
+      this.article.render = render
+      console.log(render)
+      console.log('!!!' + this.article.content)
     }
   }
 }

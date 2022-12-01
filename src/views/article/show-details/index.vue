@@ -13,8 +13,7 @@
     </template>
 
     <!--文章内容-->
-    <div v-html="articleDetails.content" class="markdown-body" style="padding:20px">
-    </div>
+    <mavon-render v-model="articleDetails.content.replace(/\n/g, `<br>`)"></mavon-render>
 
     <!--用户回复-->
     <el-tabs v-model="curPane" class="reply">
@@ -30,7 +29,6 @@
 import api from '@/api'
 import util from '@/libs/util'
 import reply from '@/components/reply'
-import 'github-markdown-css'
 
 export default {
   name: 'show-article-details',
