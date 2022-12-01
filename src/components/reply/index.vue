@@ -45,7 +45,7 @@
       <!--回复内容-->
       <div class="talk-box">
         <p>
-          <span class="reply">{{reply.content}}</span>
+          <span v-html="reply.content" class="reply">{{}}</span>
         </p>
       </div>
       <!--对回复进行回复-->

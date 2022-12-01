@@ -32,6 +32,15 @@ const frameIn = [
         component: () => import('@/views/article/create')
       },
       {
+        path: 'article/update',
+        name: 'article-update',
+        meta: {
+          title: '修改文章',
+          auth: true
+        },
+        component: () => import('@/views/article/update')
+      },
+      {
         path: 'article/show-all',
         name: 'show-all-articles',
         meta: {
