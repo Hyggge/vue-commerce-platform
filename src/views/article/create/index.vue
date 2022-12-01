@@ -1,7 +1,7 @@
 <template>
   <d2-container>
     <template v-slot:header>
-      <!--搜索框-->
+      <!--輸入题目-->
       <div style="text-align: center">
         <el-input
           type="text"
@@ -12,7 +12,9 @@
         <el-button type="success" style="margin-left: 10px" @click="createArticle" >发布</el-button>
       </div>
     </template>
-    <el-input size="mini" placeholder="请输入推荐的商品连接...(非必要)" v-model="article.commodityUrl"></el-input>
+    <!--推荐商品的连接-->
+    <el-input size="mini" placeholder="请输入推荐的商品连接...(非必要)" v-model.trim="article.commodityUrl"></el-input>
+    <!--富文本编辑器-->
     <mavon-editor v-model="article.content" ref=md class="editor" @imgAdd="imgAdd" @imgDel="imgDel" @change="changeContent"/>
   </d2-container>
 </template>
@@ -25,11 +27,9 @@ export default {
   name: 'article-create',
   data () {
     return {
-      token: util.cookies.get('token'),
       article: {
         title: '',
         content: '',
-        render: '',
         commodityUrl: ''
       }
     }
@@ -44,6 +44,8 @@ export default {
         this.$Message.error('文章标题不能为空！')
       } else if (this.article.content === '') {
         this.$Message.error('文章内容不能为空！')
+      } else if (new RegExp('^' + process.env.VUE_APP_USER_API_BASE + 'commodity/show-details/\\d+$').test(this.article.commodityUrl) === false) {
+        this.$Message.error('不是有效的商品连接！')
       } else {
         const data = {
           title: this.article.title,
@@ -74,15 +76,15 @@ export default {
      */
     async imgDel (pos) {
       // DO NOTHING
-    },
+    }
     /**
      * 实时获取渲染后的文档
      */
-    changeContent (value, render) {
-      this.article.render = render
-      console.log(render)
-      console.log('!!!' + this.article.content)
-    }
+    // changeContent (value, render) {
+    //   this.article.render = render
+    //   console.log(render)
+    //   console.log('!!!' + this.article.content)
+    // }
   }
 }
 </script>

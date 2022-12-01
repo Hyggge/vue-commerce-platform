@@ -32,7 +32,7 @@ const frameIn = [
         component: () => import('@/views/article/create')
       },
       {
-        path: 'article/update',
+        path: 'article/update/:id',
         name: 'article-update',
         meta: {
           title: '修改文章',

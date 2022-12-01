@@ -9,6 +9,7 @@
       <div class="btn">
         <el-button class="link" size="mini" type="danger" @click="showCommodityDetails"> 商品传送门 </el-button>
         <el-button class="link" size="mini" type="primary" @click="copyLink"> 复制文章连接 </el-button>
+        <el-button v-if="auth.id === articleDetails.user_id" class="link" size="mini" type="warning" @click="modifyArticle"> 修改文章 </el-button>
       </div>
     </template>
 
@@ -29,10 +30,18 @@
 import api from '@/api'
 import util from '@/libs/util'
 import reply from '@/components/reply'
+import { mapState } from 'vuex'
 
 export default {
   name: 'show-article-details',
-  components: { reply },
+  components: {
+    reply
+  },
+  computed: {
+    ...mapState('d2admin/user', {
+      auth: 'info'
+    })
+  },
   data () {
     return {
       articleId: this.$route.params.id,
@@ -43,7 +52,7 @@ export default {
   methods: {
     formatTime: util.time.formatTime,
     /**
-     * 获得商品详情
+     * 获得文章详情
      */
     async getArticleDetails () {
       this.articleDetails = await api.GET_ARTICLE_DETAILS(this.articleId)
@@ -60,11 +69,17 @@ export default {
       }
     },
     /**
-     * 复制当前商品链接
+     * 复制当前文章链接
      */
     async copyLink () {
       await this.$copyText(window.location.href)
       this.$Message.success('已经成功复制到剪切板！')
+    },
+    /**
+     * 跳转到修改文章的页面
+     */
+    modifyArticle () {
+      this.$router.push({ path: `/article/update/${this.articleId}` })
     }
   },
   mounted () {
