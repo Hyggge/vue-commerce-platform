@@ -15,8 +15,10 @@ import i18n from '@/i18n.js'
 // 复制内容到剪切板
 import VueClipboard from 'vue-clipboard2'
 // 富文本编辑器
-import mavonEditor from 'novam-editor'
-import 'novam-editor/dist/css/index.css'
+import mavonEditor from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css'
+// import mavonRender from 'novam-editor'
+// import 'novam-editor/dist/css/index.css' 必须结合mavon-render进行渲染，但是会覆盖mavon-editor，仍然不能换行
 
 // 功能插件
 import pluginApi from '@/plugin/api'
@@ -49,5 +51,6 @@ export default {
     Vue.use(ViewUI)
     Vue.use(VueClipboard)
     Vue.use(mavonEditor)
+    // Vue.use(mavonRender)
   }
 }

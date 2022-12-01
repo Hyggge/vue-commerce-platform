@@ -14,7 +14,7 @@
     </template>
 
     <!--文章内容-->
-    <mavon-render v-model="articleDetails.content.replace(/\n/g, `<br>`)"></mavon-render>
+    <div v-html="render(this.articleDetails.content.replace(/\n/g, `<br>`))" class="markdown-body"></div>
 
     <!--用户回复-->
     <el-tabs v-model="curPane" class="reply">
@@ -30,7 +30,9 @@
 import api from '@/api'
 import util from '@/libs/util'
 import reply from '@/components/reply'
+import { marked } from 'marked'
 import { mapState } from 'vuex'
+import 'github-markdown-css'
 
 export default {
   name: 'show-article-details',
@@ -50,6 +52,7 @@ export default {
     }
   },
   methods: {
+    render: marked,
     formatTime: util.time.formatTime,
     /**
      * 获得文章详情

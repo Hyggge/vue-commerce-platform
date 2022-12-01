@@ -48,7 +48,7 @@ export default {
       const res = await api.GET_ARTICLE_DETAILS(this.articleId)
       this.article.title = res.title
       this.article.content = res.content
-      this.article.commodityUrl = 'http://localhost:8080/#/commodity/show-details/' + res.id
+      if (res.commodity !== null) this.article.commodityUrl = process.env.VUE_APP_USER_API_BASE + 'commodity/show-details/' + res.commodity.id
       console.log(this.article)
     },
     /**
@@ -60,13 +60,14 @@ export default {
         this.$Message.error('文章标题不能为空！')
       } else if (this.article.content === '') {
         this.$Message.error('文章内容不能为空！')
-      } else if (new RegExp('^' + process.env.VUE_APP_USER_API_BASE + 'commodity/show-details/\\d+$').test(this.article.commodityUrl) === false) {
+      } else if (this.article.commodityUrl !== '' &&
+                  new RegExp('^' + process.env.VUE_APP_USER_API_BASE + 'commodity/show-details/\\d+$').test(this.article.commodityUrl) === false) {
         this.$Message.error('不是有效的商品连接！')
       } else {
         const data = {
           title: this.article.title,
           content: this.article.content,
-          commodity_id: parseInt(this.article.commodityUrl.split('/').pop())
+          commodity: this.article.commodityUrl === '' ? null : parseInt(this.article.commodityUrl.split('/').pop())
         }
         console.log(data)
         await api.MODIFY_ARTICLE(this.articleId, data)
