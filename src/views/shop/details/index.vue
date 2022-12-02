@@ -23,6 +23,7 @@
       </el-row>
     </template>
 
+    <!--基本信息-->
     <el-collapse :value="['1', '2', '3']">
       <el-collapse-item title="基本信息" name="1">
         <el-descriptions class="margin-top"  :column="2"  border>
@@ -70,11 +71,12 @@
               <i class="el-icon-user"></i>
               店铺介绍
             </template>
-            {{curShopDetails.introduction}}
+            {{curShopDetails.introduction === '' ? '无' : curShopDetails.introduction}}
           </el-descriptions-item>
         </el-descriptions>
       </el-collapse-item>
 
+      <!--店主信息-->
       <el-collapse-item title="店主信息" name="2">
         <el-descriptions class="margin-top"  :column="2"  border>
           <!--店主id-->
@@ -112,6 +114,7 @@
         </el-descriptions>
       </el-collapse-item>
 
+      <!--管理员信息-->
       <el-collapse-item v-if="curShopDetails.type === 1" title="管理员信息" name="3">
         <el-table
           border
