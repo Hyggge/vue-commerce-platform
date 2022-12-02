@@ -249,13 +249,13 @@
           <template slot="label">
             交易地址
           </template>
-          {{curOrderDetails.address === '' ? '无' : curOrderDetails.address}}
+          {{curOrderDetails.address === null ? '无' : curOrderDetails.address}}
         </el-descriptions-item>
         <el-descriptions-item :span="2">
           <template slot="label">
             备注
           </template>
-          {{curOrderDetails.note === '' ? '无' : curOrderDetails.note}}
+          {{curOrderDetails.note === null ? '无' : curOrderDetails.note}}
         </el-descriptions-item>
         <el-descriptions-item v-if="curOrderDetails.status >= 0" :span="2">
           <template slot="label">
