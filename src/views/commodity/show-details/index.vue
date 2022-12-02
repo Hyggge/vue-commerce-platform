@@ -30,6 +30,20 @@
             {{commodityDetails.total - commodityDetails.sale}}
           </el-col>
         </el-row>
+        <!--商品评价-->
+        <el-row class="term">
+          <el-col class="title" :span="3"> 商品评分:</el-col>
+          <el-col class="content" :span="20">
+            <el-rate v-if="commodityDetails.grade !== null"
+              v-model="commodityDetails.grade"
+              disabled
+              show-score
+              text-color="#ff9900"
+              score-template="{value}">
+            </el-rate>
+            <div v-else>暂无评分</div>
+          </el-col>
+        </el-row>
         <!--交易方式-->
         <el-row class="term">
           <el-col class="title" :span="3"> 交易方式:</el-col>

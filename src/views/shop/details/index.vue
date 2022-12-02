@@ -57,13 +57,14 @@
               <i class="el-icon-user"></i>
               店铺评分
             </template>
-            <el-rate
+            <el-rate v-if="curShopDetails.grade"
               v-model="curShopDetails.grade"
               disabled
               show-score
               text-color="#ff9900"
               score-template="{value}">
             </el-rate>
+            <div v-else>暂无评分</div>
           </el-descriptions-item>
           <!--店铺介绍-->
           <el-descriptions-item>
