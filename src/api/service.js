@@ -2,7 +2,9 @@ import axios from 'axios'
 import Adapter from 'axios-mock-adapter'
 import { get } from 'lodash'
 import util from '@/libs/util'
-import { errorLog, errorCreate } from './tools'
+import { errorLog } from './tools'
+import router from '@/router'
+import { Message } from 'element-ui'
 
 /**
  * @description 创建请求实例
@@ -30,21 +32,10 @@ function createService () {
       if (code === undefined) {
         // 如果没有 code 代表这不是项目后端开发的接口 比如可能是 D2Admin 请求最新版本
         return dataAxios
-      } else {
-        // 有 code 代表这是一个后端接口 可以进行进一步的判断
-        switch (code) {
-          case 0:
-            // [ 示例 ] code === 0 代表没有错误
-            return dataAxios.data
-          case 'xxx':
-            // [ 示例 ] 其它和后台约定的 code
-            errorCreate(`[ code: xxx ] ${dataAxios.msg}: ${response.config.url}`)
-            break
-          default:
-            // 不是正确的 code
-            errorCreate(`${dataAxios.msg}: ${response.config.url}`)
-            break
-        }
+      } else if (code === 400 && dataAxios.error_msg === 'ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR: Token过期') {
+        router.push({ path: '/login' })
+        Message.error('用户信息失效，请重新登录！')
+        // TODO:测试该功能
       }
     },
     error => {
