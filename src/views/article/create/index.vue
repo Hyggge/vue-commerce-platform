@@ -45,7 +45,7 @@ export default {
       } else if (this.article.content === '') {
         this.$Message.error('文章内容不能为空！')
       } else if (this.article.commodityUrl !== '' &&
-        new RegExp('^' + process.env.VUE_APP_USER_API_BASE + 'commodity/show-details/\\d+$').test(this.article.commodityUrl) === false) {
+        new RegExp('^' + window.location.href.split('#')[0] + '#/commodity/show-details/\\d+$').test(this.article.commodityUrl) === false) {
         this.$Message.error('不是有效的商品连接！')
       } else {
         const data = {
