@@ -1,7 +1,13 @@
 <template>
   <d2-container>
     <template v-slot:header>
-      <h3>用户列表</h3>
+      <el-row>
+        <el-col><h3>用户列表</h3></el-col>
+        <el-col style="text-align: right; margin-top: -30px">
+          <el-button type="primary" @click="exportToCsv">导出为csv</el-button>
+        </el-col>
+      </el-row>
+
     </template>
     <el-table
       :data="tableData"
@@ -143,6 +149,19 @@ export default {
   },
   methods: {
     formatTime: util.time.formatTime,
+    /**
+     * 导出用户csv文件
+     */
+    async exportToCsv () {
+      const res = await api.GET_USER_CSV()
+      let data = res.split('\n')
+      data = data.map(x => x + '\n')
+      var blob = new Blob(data, { type: 'text/csv,charset=UTF-8' })
+      const a = document.createElement('a')
+      a.href = URL.createObjectURL(blob)
+      a.download = '用戶列表.csv'
+      a.click()
+    },
     /**
      * 根据curPage,filter,sort_by构造params，并发送请求
      */

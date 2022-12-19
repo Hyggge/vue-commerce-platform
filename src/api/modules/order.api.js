@@ -73,5 +73,14 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
       method: 'get',
       params
     })
+  },
+
+  GET_ORDER_CSV () {
+    return request({
+      url: 'order/user/list_csv',
+      method: 'get'
+    })
   }
+
+
 })

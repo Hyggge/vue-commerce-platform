@@ -1,7 +1,12 @@
 <template>
   <d2-container>
     <template v-slot:header>
-      <h2>订单列表</h2>
+      <el-row>
+        <el-col><h3>订单列表</h3></el-col>
+        <el-col style="text-align: right; margin-top: -30px">
+          <el-button type="primary" @click="exportToCsv">导出为csv</el-button>
+        </el-col>
+      </el-row>
     </template>
 
     <el-table :data="tableData"
@@ -351,6 +356,19 @@ export default {
   },
   methods: {
     formatTime: util.time.formatTime,
+    /**
+     * 导出用户csv文件
+     */
+    async exportToCsv () {
+      const res = await api.GET_ORDER_CSV()
+      let data = res.split('\n')
+      data = data.map(x => x + '\n')
+      var blob = new Blob(data, { type: 'text/csv,charset=UTF-8' })
+      const a = document.createElement('a')
+      a.href = URL.createObjectURL(blob)
+      a.download = '订单列表.csv'
+      a.click()
+    },
     /**
      * 获取用户自己的所有订单
      */
