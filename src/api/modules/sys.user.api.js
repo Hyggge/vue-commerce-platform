@@ -9,6 +9,7 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
       data
     })
   },
+
   USER_REGISTER (data = {}) {
     return request({
       url: 'auth/register',
@@ -16,10 +17,15 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
       data
     })
   },
-  CHECK_DUP_USERNAME(username) {
+
+  CHECK_DUP_USERNAME (username) {
     return request({
       url: `/auth/check_username/${username}`,
       method: 'get'
     })
+  },
+
+  BATCH_REGISTER () {
+
   }
 })

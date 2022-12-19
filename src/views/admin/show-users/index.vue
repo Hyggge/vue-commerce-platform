@@ -1,10 +1,24 @@
 <template>
   <d2-container>
     <template v-slot:header>
+      <el-row :gutter="20">
+        <el-col :span="6"><h3>用户列表</h3></el-col>
+        <el-col :span="3" :offset="15" style="margin-top: -10px">
+          <el-button size="mini" type="primary" @click="exportToCsv">导出为csv</el-button>
+        </el-col>
+      </el-row>
+
       <el-row>
-        <el-col><h3>用户列表</h3></el-col>
-        <el-col style="text-align: right; margin-top: -30px">
-          <el-button type="primary" @click="exportToCsv">导出为csv</el-button>
+        <el-col :span="3" :offset="21">
+          <el-upload
+            class="upload-demo"
+            :headers="{Authorization: 'Bearer ' + token}"
+            :on-success="handleUploadSuccess"
+            :on-error="handleUploadError"
+            :show-file-list="false"
+            action="/api/auth/batch/register">
+            <el-button size="mini"  type="success" >批量创建用户</el-button>
+          </el-upload>
         </el-col>
       </el-row>
 
@@ -128,6 +142,7 @@ export default {
   name: 'show-users',
   data () {
     return {
+      token: util.cookies.get('token'),
       // 用户输入的查询参数
       queryId: '',
       queryUsername: '',
@@ -271,6 +286,25 @@ export default {
       }
       this.currentPage = 1
       this.queryUsers()
+    },
+    /**
+     * 批量创建用户
+     */
+    handleUploadSuccess (res, file) {
+      // console.log(res)
+      if (res.error_msg != null) {
+        this.$Message.error({
+          content: res.error_msg.join('  \n\n'),
+          duration: 10,
+          closable: true
+        })
+      } else {
+        this.$Message.success('创建成功！')
+      }
+    },
+    handleUploadError (res, file) {
+      // console.log(res)
+      this.$Message.error('文件不合法')
     }
   },
   mounted () {
