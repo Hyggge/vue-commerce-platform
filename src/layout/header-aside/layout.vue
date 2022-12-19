@@ -28,7 +28,7 @@
 <!--          <d2-header-size/>-->
 <!--          <d2-header-locales/>-->
 <!--          <d2-header-color/>-->
-          <el-avatar style="margin-left: 10px" :size="30" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"></el-avatar>
+          <el-avatar style="margin-left: 10px" :size="30" :src="headImg"></el-avatar>
           <d2-header-user/>
         </div>
       </div>
@@ -110,6 +110,7 @@ export default {
   },
   data () {
     return {
+      headImg: this.$store.state.d2admin.user.info.headImg,
       // [侧边栏宽度] 正常状态
       asideWidth: '200px',
       // [侧边栏宽度] 折叠状态

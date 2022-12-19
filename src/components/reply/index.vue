@@ -112,7 +112,7 @@ export default {
       index: '0',
       replyComment: '',
       myName: 'Lana Del Rey',
-      myHeader: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
+      myHeader: this.$store.state.d2admin.user.info.headImg,
       myId: 19870621,
       to: '',
       toId: -1,

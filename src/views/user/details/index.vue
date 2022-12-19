@@ -3,14 +3,27 @@
      <template v-slot:header>
         <el-row >
           <el-col style="text-align: center">
-            <el-avatar style="margin-left: 10px;" :size="150" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"></el-avatar>
+            <el-avatar style="margin-left: 10px;" :size="150" :src="userInfo.img_url"></el-avatar>
           </el-col>
+
         </el-row>
          <el-row>
            <el-col style="text-align: center">
              <h2 style="text-align:center">{{auth.username}}</h2>
            </el-col>
+           <el-col style="text-align: right; margin-top: -30px">
+             <el-upload
+               class="upload-demo"
+               :headers="{Authorization: 'Bearer ' + token}"
+               :on-success="handleUploadSuccess"
+               :on-error="handleUploadError"
+               :show-file-list="false"
+               :action="`/api/file/upload`">
+               <el-button size="mini"  type="success" >上传新头像</el-button>
+             </el-upload>
+           </el-col>
          </el-row>
+
      </template>
 
     <el-collapse :value="['1', '2']" @change="handleChange">
@@ -165,8 +178,8 @@
 </template>
 
 <script>
-import { mapState} from 'vuex'
-import { getDepartNameById } from "@/libs/util.depart";
+import { mapState } from 'vuex'
+import { getDepartNameById } from '@/libs/util.depart'
 import api from '@/api'
 import util from '@/libs/util'
 
@@ -179,6 +192,7 @@ export default {
   },
   data () {
     return {
+      token: util.cookies.get('token'),
       drawer: false,
       status: 0,
       userInfo: {},
@@ -196,7 +210,7 @@ export default {
     /**
      * 通过status获得具体的认证状态信息
      */
-    getStatusInfo(status) {
+    getStatusInfo (status) {
       return status === -1 ? '未认证' : status === 0 ? '认证中' : status === 1 ? '认证成功' : '认证失败'
     },
     /**
@@ -218,8 +232,7 @@ export default {
      */
     async getReqList () {
       this.reqList = (await api.GET_USER_CERTIFICATE_REQ_LIST()).auth_reqs
-      if (this.reqList.length > 0)
-        this.lastReqDetails = await api.GET_USER_CERTIFICATE_REQ_DETAIL(this.reqList[this.reqList.length - 1].id)
+      if (this.reqList.length > 0) { this.lastReqDetails = await api.GET_USER_CERTIFICATE_REQ_DETAIL(this.reqList[this.reqList.length - 1].id) }
       // 认证状态
       if (this.reqList.length === 0) this.status = -1
       else this.status = this.lastReqDetails.status
@@ -231,13 +244,25 @@ export default {
     async getReqDetails (reqId) {
       const res = await api.GET_USER_CERTIFICATE_REQ_DETAIL(reqId)
       const msg = JSON.stringify(res).slice(1, -1).split(',').join('\n\n')
-      this.$alert(msg, '详细信息', {confirmButtonText: '确定'});
+      this.$alert(msg, '详细信息', { confirmButtonText: '确定' })
     },
     /**
      * 用户发出认证申请
      */
     certificate () {
-      this.$router.push({name: 'user-certificate'})
+      this.$router.push({ name: 'user-certificate' })
+    },
+    /**
+     * 上传新头像
+     */
+    async handleUploadSuccess (res, file) {
+      await api.SET_USER_HEAD_IMG(res.id)
+      this.$store.state.d2admin.user.info.headImg = await api.DOWNLOAD_FILE(res.id)
+      this.$Message.success('上传成功！')
+      this.getUserInfo()
+    },
+    handleUploadError (res, file) {
+      this.$Message.error('上传失败！')
     }
   },
   mounted () {

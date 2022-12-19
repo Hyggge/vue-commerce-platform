@@ -1,3 +1,4 @@
+<script src="../../../api/modules/file.api.js"></script>
 <template>
   <d2-container>
     <template v-slot:header>
@@ -13,12 +14,23 @@
           </el-select>
         </el-col>
         <el-col style="text-align: center">
-          <el-avatar style="margin-left: 10px;" :size="150" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"></el-avatar>
+          <el-avatar style="margin-left: 10px;" :size="150" :src="shopImg"></el-avatar>
         </el-col>
       </el-row>
       <el-row>
         <el-col style="text-align: center">
           <h2 style="text-align:center">{{curShopDetails.name}}</h2>
+        </el-col>
+        <el-col style="text-align: right; margin-top: -30px">
+          <el-upload
+            class="upload-demo"
+            :headers="{Authorization: 'Bearer ' + token}"
+            :on-success="handleUploadSuccess"
+            :on-error="handleUploadError"
+            :show-file-list="false"
+            :action="`/api/file/upload`">
+            <el-button size="mini"  type="success" >上传新头像</el-button>
+          </el-upload>
         </el-col>
       </el-row>
     </template>
@@ -150,17 +162,28 @@
 
 <script>
 import api from '@/api'
+import util from '@/libs/util'
 
 export default {
   name: 'shop-details',
   data () {
     return {
+      token: util.cookies.get('token'),
       userId: this.$store.state.d2admin.user.info.id,
       shopList: [],
       ownerShopList: [],
       adminShopList: [],
       curShopId: 0,
       curShopDetails: {}
+    }
+  },
+  computed: {
+    shopImg () {
+      if (this.curShopDetails.img_url == null) {
+        return 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
+      } else {
+        return this.curShopDetails.img_url
+      }
     }
   },
   methods: {
@@ -205,7 +228,19 @@ export default {
             this.$Message.error('删除失败！')
           })
       })
+    },
+    /**
+     * 上传新头像
+     */
+    async handleUploadSuccess (res, file) {
+      await api.SET_SHOP_IMG(res.id, this.curShopId)
+      this.$Message.success('上传成功！')
+      await this.getShopDetails()
+    },
+    handleUploadError (res, file) {
+      this.$Message.error('上传失败！')
     }
+
   },
   watch: {
     curShopId: {

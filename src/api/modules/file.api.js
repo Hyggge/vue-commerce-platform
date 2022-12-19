@@ -21,5 +21,20 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
       url: `/file/url/${fileId}`,
       method: 'get'
     })
+  },
+
+  SET_USER_HEAD_IMG (imgId) {
+    return request({
+      url: `/image/user/${imgId}`,
+      method: 'post'
+    })
+  },
+
+  SET_SHOP_IMG (imgId, shopId) {
+    return request({
+      url: `/image/shop/${imgId}`,
+      method: 'post',
+      data: { shop_id: shopId }
+    })
   }
 })

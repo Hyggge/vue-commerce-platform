@@ -3,13 +3,13 @@
     <template v-slot:header>
       <el-row :gutter="20">
         <el-col :span="6"><h3>用户列表</h3></el-col>
-        <el-col :span="3" :offset="15" style="margin-top: -10px">
+        <el-col :span="3" :offset="15" style="margin-top: -10px; text-align: right">
           <el-button size="mini" type="primary" @click="exportToCsv">导出为csv</el-button>
         </el-col>
       </el-row>
 
       <el-row>
-        <el-col :span="3" :offset="21">
+        <el-col :span="3" :offset="21" style="text-align: right">
           <el-upload
             class="upload-demo"
             :headers="{Authorization: 'Bearer ' + token}"
