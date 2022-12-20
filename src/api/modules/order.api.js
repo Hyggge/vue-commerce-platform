@@ -84,7 +84,7 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
 
   GET_USER_CONSUME_STATISTIC_PIC (year, id) {
     return request({
-      url: '/draw_3/consume',
+      url: '/draw/consume',
       method: 'get',
       params: { year, id }
       // dataType: 'json'

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-for="(item,i) in commentList" :key="i" class="author-title reply-father">
-      <el-avatar class="header-img" :size="40" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"></el-avatar>
+      <el-avatar class="header-img" :size="40" :src="item.user_image_url != null ? item.user_image_url : 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'"></el-avatar>
       <div class="author-info">
         <span class="author-name">{{item.order__user__nickname}}</span>
         <span class="author-time" >

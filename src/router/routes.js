@@ -21,12 +21,13 @@ const frameIn = [
         },
         component: () => import('@/views/home')
       },
-      // 首页
+      // 个人消费统计
       {
         path: 'statistic',
         name: 'statistic',
         meta: {
-          auth: true
+          auth: true,
+          title: '消费统计'
         },
         component: () => import('@/views/statistic')
       },

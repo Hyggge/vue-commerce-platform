@@ -27,7 +27,7 @@
     </div>
     <div v-for="reply in replyList" :key="reply.id" class="author-title reply-father">
       <!--回复者头像-->
-      <el-avatar class="header-img" :size="40" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"></el-avatar>
+      <el-avatar class="header-img" :size="40" :src="reply.image_url != null ? reply.image_url : 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'"></el-avatar>
       <!--回复者信息-->
       <div class="author-info">
         <span class="author-name">{{reply.user__nickname}} </span>
