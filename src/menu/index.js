@@ -44,6 +44,11 @@ export const menuAside = supplementPath([
     icon: 'truck'
   },
   {
+    path: '/statistic',
+    title: '消费统计',
+    icon: 'bar-chart'
+  },
+  {
     title: '我的店铺',
     icon: 'home',
     children: [

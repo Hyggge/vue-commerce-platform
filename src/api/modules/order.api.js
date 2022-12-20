@@ -80,7 +80,14 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
       url: 'order/user/list_csv',
       method: 'get'
     })
+  },
+
+  GET_USER_CONSUME_STATISTIC_PIC (year, id) {
+    return request({
+      url: '/draw_3/consume',
+      method: 'get',
+      params: { year, id }
+      // dataType: 'json'
+    })
   }
-
-
 })

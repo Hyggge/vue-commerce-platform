@@ -3,7 +3,7 @@
      <template v-slot:header>
         <el-row >
           <el-col style="text-align: center">
-            <el-avatar style="margin-left: 10px;" :size="150" :src="userInfo.img_url"></el-avatar>
+            <el-avatar style="margin-left: 10px;" :size="150" :src="headImg"></el-avatar>
           </el-col>
 
         </el-row>
@@ -188,7 +188,14 @@ export default {
   computed: {
     ...mapState('d2admin/user', {
       auth: 'info'
-    })
+    }),
+    headImg () {
+      if (this.userInfo.img_url == null) {
+        return 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
+      } else {
+        return this.userInfo.img_url
+      }
+    }
   },
   data () {
     return {

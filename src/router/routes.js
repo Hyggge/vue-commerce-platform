@@ -21,6 +21,15 @@ const frameIn = [
         },
         component: () => import('@/views/home')
       },
+      // 首页
+      {
+        path: 'statistic',
+        name: 'statistic',
+        meta: {
+          auth: true
+        },
+        component: () => import('@/views/statistic')
+      },
       // 文章
       {
         path: 'article/create',

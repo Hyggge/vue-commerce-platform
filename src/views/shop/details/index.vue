@@ -1,4 +1,3 @@
-<script src="../../../api/modules/file.api.js"></script>
 <template>
   <d2-container>
     <template v-slot:header>
