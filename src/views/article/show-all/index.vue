@@ -44,11 +44,19 @@
     <el-row :gutter="30">
       <el-col v-for="article in articleList" :key="article.id" :span="6" style="margin-bottom: 20px">
         <div @click="showDetails(article.id)">
-          <el-card style="height: 200px; cursor: pointer">
+          <el-card style="height: 250px; cursor: pointer">
             <div slot="header" class="clearfix">
-              <h3>{{article.title}}</h3>
+              <h3>
+                <span>{{article.title}}</span>
+              </h3>
               <div class="author">作者: {{article.user__nickname}}</div>
               <div class="time">  时间: {{formatTime(article.post_time)}}</div>
+              <div class="time" style="margin-top: 2px">
+                <img src="../../../assets/img/liked.svg" alt="" style="width: 14px; ">
+                <span style="padding-top: 10px">{{article.star_count}}</span>
+                <img src="../../../assets/img/collected.svg" alt="" style="width: 14px; margin-left: 7px">
+                <span>{{article.collect_count}}</span>
+              </div>
             </div>
             <p>
               {{ modifyContent(article.content) }}

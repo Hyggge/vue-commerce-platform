@@ -7,9 +7,23 @@
         <span class="time">发布时间: {{formatTime(articleDetails.post_time)}}</span>
       </div>
       <div class="btn">
+        <el-button v-if="articleDetails.star" circle size="mini"  @click="cancelStar">
+          <img src="../../../assets/img/liked.svg" alt= "" style="width: 10px">
+        </el-button>
+        <el-button v-else  circle size="mini" @click="clickStar">
+          <img src="../../../assets/img/not-liked.svg" alt= "" style="width: 10px">
+        </el-button>
+
         <el-button class="link" size="mini" type="danger" @click="showCommodityDetails"> 商品传送门 </el-button>
         <el-button class="link" size="mini" type="primary" @click="copyLink"> 复制文章连接 </el-button>
         <el-button v-if="auth.id === articleDetails.user_id" class="link" size="mini" type="warning" @click="modifyArticle"> 修改文章 </el-button>
+
+        <el-button v-if="articleDetails.collect" circle size="mini" @click="cancelCollect">
+          <img src="../../../assets/img/collected.svg" alt= "" style="width: 10px">
+        </el-button>
+        <el-button v-else circle size="mini" @click="clickCollect">
+          <img src="../../../assets/img/not-collected.svg" alt= "" style="width: 10px">
+        </el-button>
       </div>
     </template>
 
@@ -83,6 +97,38 @@ export default {
      */
     modifyArticle () {
       this.$router.push({ path: `/article/update/${this.articleId}` })
+    },
+    /**
+     * 点赞
+     */
+    async clickStar () {
+      await api.CLICK_STAR(this.articleId)
+      await this.getArticleDetails()
+      this.$Message.success('点赞成功')
+    },
+    /**
+     * 取消点赞
+     */
+    async cancelStar () {
+      await api.CANCEL_STAR(this.articleId)
+      await this.getArticleDetails()
+      this.$Message.success('取消点赞')
+    },
+    /**
+     * 收藏
+     */
+    async clickCollect () {
+      await api.CLICK_COLLECT(this.articleId)
+      await this.getArticleDetails()
+      this.$Message.success('收藏成功')
+    },
+    /**
+     * 取消收藏
+     */
+    async cancelCollect () {
+      await api.CANCEL_COLLECT(this.articleId)
+      await this.getArticleDetails()
+      this.$Message.success('取消收藏')
     }
   },
   mounted () {
