@@ -93,6 +93,20 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
       params: { page, page_size: 9999 },
       data
     })
+  },
+
+  COLLECT_COMMODITY (commodityId) {
+    return request({
+      url: `/api/commodity/collect/${commodityId}`,
+      method: 'post'
+    })
+  },
+
+  CANCEL_COLLECT_COMMODITY (commodityId) {
+    return request({
+      url: `/api/commodity/cancel_collect/${commodityId}`,
+      method: 'post'
+    })
   }
 
 })

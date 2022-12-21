@@ -92,6 +92,12 @@
                    @click="openModal">立即下单</el-button>
         <el-button type="primary" round style="margin-top: 20px"
                    @click="copyLink">复制链接</el-button>
+<!--        <el-button v-if="articleDetails.collect" circle size="mini" @click="cancelCollect">-->
+<!--          <img src="../../../assets/img/collected.svg" alt= "" style="width: 10px">-->
+<!--        </el-button>-->
+<!--        <el-button v-else circle size="mini" @click="clickCollect">-->
+<!--          <img src="../../../assets/img/not-collected.svg" alt= "" style="width: 10px">-->
+<!--        </el-button>-->
       </el-col>
     </el-row>
     <!--用户评论-->
