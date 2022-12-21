@@ -20,7 +20,8 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
   GET_USER_CSV () {
     return request({
       url: 'admin/user/list_csv',
-      method: 'get'
+      method: 'get',
+      params: { bom: true }
     })
   }
 
