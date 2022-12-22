@@ -2,6 +2,7 @@ import { Message, MessageBox } from 'element-ui'
 import util from '@/libs/util.js'
 import router from '@/router'
 import api from '@/api'
+import { menuHeader, menuAside } from '@/menu'
 
 export default {
   namespaced: true,
@@ -13,7 +14,7 @@ export default {
      * @param {Object} payload password {String} 密码
      * @param {Object} payload route {Object} 登录成功后定向的路由对象 任何 vue-router 支持的格式
      */
-    async login ({ dispatch }, { username, password }) {
+    async login ({ commit, dispatch }, { username, password }) {
       const res = await api.USER_LOGIN({ username, password })
       // 设置 cookie 一定要存 uuid 和 token 两个 cookie
       // 整个系统依赖这两个数据进行校验和存储
@@ -29,6 +30,16 @@ export default {
       if (headImg == null) headImg = 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
       // 设置 vuex 用户信息
       await dispatch('d2admin/user/set', { username: username, role: res.role, id: res.id, headImg: headImg }, { root: true })
+      // 如果用戶不是管理员，则不展示管理页面
+      if (res.role === 1) {
+        // alert('hello')
+        menuAside.pop()
+        // 设置侧边栏菜单
+        commit('d2admin/menu/asideSet', menuAside)
+        // 初始化菜单搜索功能
+        commit('d2admin/search/init', menuAside)
+      }
+
       // 用户登录后从持久化数据加载一系列的设置
       await dispatch('load')
     },
