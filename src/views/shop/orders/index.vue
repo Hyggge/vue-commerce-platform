@@ -515,7 +515,12 @@ export default {
   },
   mounted () {
     this.getShopList().then(() => {
-      this.curShopId = this.shopList[0].id
+      if (this.shopList.length === 0) {
+        this.$router.push({ path: '/shop/create' })
+        this.$Message.warning('您还没有创建店铺!')
+      } else {
+        this.curShopId = this.shopList[0].id
+      }
     })
   }
 }
