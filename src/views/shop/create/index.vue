@@ -59,7 +59,9 @@ export default {
           this.$router.push('/shop/details')
         })
         .catch((err) => {
-          console.log(err)
+          if (err.response.data.error_msg === 'ErrorCode.INVALID_REQUEST_ARGS: 需要先进行学生认证才能开店') {
+            this.$Message.error('需要先进行学生认证才能开店')
+          }
         })
     }
   }
