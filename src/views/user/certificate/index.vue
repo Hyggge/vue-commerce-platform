@@ -20,6 +20,7 @@
             <el-date-picker
               style="width: 100%"
               v-model="form.attendance_year"
+              value-format="yyyy"
               type="year"
               placeholder="选择年">
             </el-date-picker>
