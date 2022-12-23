@@ -58,7 +58,7 @@
             <el-form-item label="可选项" required>
               <row v-for="(option, optionIndex) in para.options" :key="optionIndex" style="margin-bottom: 22px">
                 <!--可选项名称-->
-                <el-form-item :prop="'para_set.' + paraIndex +'.options.'+ optionIndex +'.value'" :rules="rules.optionName">
+                <el-form-item :prop="'para_set.' + paraIndex +'.options.'+ optionIndex +'.description'" :rules="rules.optionName">
                   <el-input v-model="option.description" style="width: 130px; margin-right: 10px" placeholder="请输入选项名称" > </el-input>
                 </el-form-item>
                 <!--可选项对应价格-->

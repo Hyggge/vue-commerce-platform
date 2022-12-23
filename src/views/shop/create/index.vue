@@ -56,6 +56,7 @@ export default {
         .then((res) => {
           console.log(res)
           this.$Message.success('创建成功！')
+          this.$router.push('/shop/details')
         })
         .catch((err) => {
           console.log(err)
