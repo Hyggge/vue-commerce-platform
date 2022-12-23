@@ -363,7 +363,7 @@ export default {
       const res = await api.GET_ORDER_CSV()
       let data = res.split('\n')
       data = data.map(x => x + '\n')
-      var blob = new Blob(data, { type: 'text/csv,charset=UTF-8' })
+      var blob = new Blob(['\uFEFF' + data], { type: 'text/csv,charset=UTF-8' })
       const a = document.createElement('a')
       a.href = URL.createObjectURL(blob)
       a.download = '订单列表.csv'
