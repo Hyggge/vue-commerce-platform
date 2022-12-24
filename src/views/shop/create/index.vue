@@ -6,10 +6,10 @@
     <el-row>
       <el-col :span="12" :offset="4" label-width="80px">
         <el-form ref="form" :model="form" label-width="80px">
-          <el-form-item label="店铺名">
+          <el-form-item label="店铺名" required>
             <el-input v-model.trim="form.name"></el-input>
           </el-form-item>
-          <el-form-item label="类型">
+          <el-form-item label="类型" required>
             <el-radio v-model="form.type" :label="0">个人店铺</el-radio>
             <el-radio v-model="form.type" :label="1">合作店铺</el-radio>
           </el-form-item>
@@ -47,8 +47,8 @@ export default {
   methods: {
     onSubmit () {
       // 检查表单项是否为空
-      if (this.form.name === '' || this.form.introduction === '') {
-        this.$Message.error('表单项不能为空！')
+      if (this.form.name === '') {
+        this.$Message.error('店铺名不能为空！')
         return
       }
       // 发起创建店铺请求
