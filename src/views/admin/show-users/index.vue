@@ -4,21 +4,23 @@
       <el-row :gutter="20">
         <el-col :span="6"><h3>用户列表</h3></el-col>
         <el-col :span="3" :offset="15" style="margin-top: -10px; text-align: right">
-          <el-button size="mini" type="primary" @click="exportToCsv">导出为csv</el-button>
+            <el-button size="mini" type="primary" @click="exportToCsv">导出为csv</el-button>
         </el-col>
       </el-row>
 
       <el-row>
         <el-col :span="3" :offset="21" style="text-align: right">
-          <el-upload
-            class="upload-demo"
-            :headers="{Authorization: 'Bearer ' + token}"
-            :on-success="handleUploadSuccess"
-            :on-error="handleUploadError"
-            :show-file-list="false"
-            action="/api/auth/batch/register">
-            <el-button size="mini"  type="success" >批量创建用户</el-button>
-          </el-upload>
+          <el-tooltip class="item" effect="dark" content="上传文件应为csv格式，表头属性依次为username，password，nickname，email" placement="left">
+            <el-upload
+              class="upload-demo"
+              :headers="{Authorization: 'Bearer ' + token}"
+              :on-success="handleUploadSuccess"
+              :on-error="handleUploadError"
+              :show-file-list="false"
+              action="/api/auth/batch/register">
+              <el-button size="mini"  type="success">批量创建用户</el-button>
+            </el-upload>
+          </el-tooltip>
         </el-col>
       </el-row>
 
