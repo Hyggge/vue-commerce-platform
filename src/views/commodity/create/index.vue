@@ -80,15 +80,27 @@
       <el-tab-pane label="商品图片" name="2">
         <el-form ref="form3" :model="form" label-width="80px" style="width: 80%; margin-left: 20px">
           <el-form-item label="上传图片" prop="image_id" :rules="rules.image">
+            <!--上传多个图片-->
             <el-upload
-              class="avatar-uploader"
+              class="upload-demo"
               action="/api/file/upload"
-              :show-file-list="false"
+              list-type="picture"
               :headers="{Authorization: 'Bearer ' + token}"
-              :on-success="handleUploadSuccess">
-              <img v-if="imageUrl" :src="imageUrl" class="avatar">
-              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+              :on-success="handleUploadSuccess"
+              :file-list="[]">
+              <el-button size="small" type="primary">点击上传</el-button>
+              <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
             </el-upload>
+            <!--上传单个图片-->
+            <!--<el-upload-->
+            <!--  class="avatar-uploader"-->
+            <!--  action="/api/file/upload"-->
+            <!--  :show-file-list="false"-->
+            <!--  :headers="{Authorization: 'Bearer ' + token}"-->
+            <!--  :on-success="handleUploadSuccess">-->
+            <!--  <img v-if="imageUrl" :src="imageUrl" class="avatar">-->
+            <!--  <i v-else class="el-icon-plus avatar-uploader-icon"></i>-->
+            <!--</el-upload>-->
           </el-form-item>
         </el-form>
       </el-tab-pane>
@@ -132,7 +144,7 @@ export default {
         method: 0,
         introduction: '',
         status: 2,
-        image_id: '',
+        image_id: [],
         para_set: [
           // item
           // {
@@ -191,10 +203,14 @@ export default {
       this.$Message.success('创建成功！')
       await this.$router.push({ path: '/shop/goods' })
     },
+    /**
+     * 获取已上传图片的id
+     */
     handleUploadSuccess (res, file) {
       if (res.id !== null) {
         this.imageUrl = URL.createObjectURL(file.raw)
-        this.form.image_id = res.id
+        this.form.image_id.push(res.id)
+        console.log(this.form.image_id)
       }
     },
     /**

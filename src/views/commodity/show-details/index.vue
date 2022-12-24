@@ -105,6 +105,28 @@
       <el-tab-pane label="用户评价" name="comments">
         <comments :commodityId="commodityId"></comments>
       </el-tab-pane>
+      <el-tab-pane label="商品预览图" name="otherImages">
+        <!--<div>-->
+        <!--  <img :src="commodityDetails.img_url" alt="" style="width: 80%; text-align: center">-->
+        <!--</div>-->
+        <!--<div v-for="url in commodityDetails.img_url_list">-->
+        <!--  <img :src="url" alt="" style="width: 80%; text-align: center">-->
+        <!--</div>-->
+        <el-row :gutter="30">
+          <el-col :span="6" style="margin-bottom: 20px" >
+            <div>
+              <img :src="commodityDetails.img_url" alt="" style="width: 100%; height: 100%">
+            </div>
+          </el-col>
+          <div v-for="url in commodityDetails.img_url_list">
+            <el-col :span="6" style="margin-bottom: 20px" >
+              <div>
+                <img :src="url" style="width: 100%; height: 100%">
+              </div>
+            </el-col>
+          </div>
+        </el-row>
+      </el-tab-pane>
     </el-tabs>
 
     <!--下单对话框-->
