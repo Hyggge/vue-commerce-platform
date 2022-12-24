@@ -156,7 +156,7 @@
         </el-table-column>
         <el-table-column
           prop="status"
-          label="申请状态"
+          label="认证状态"
           align="center"
           width="100">
           <template v-slot="scope">
@@ -173,6 +173,66 @@
         </el-table-column>
       </el-table>
     </el-drawer>
+
+    <Modal
+      v-model="modal"
+      title="学生认证请求详情">
+
+      <el-descriptions class="margin-top"  :column="1"  border>
+        <el-descriptions-item>
+          <template slot="label">
+            <i class="el-icon-user"></i>
+            学号
+          </template>
+          {{visReqDetails.student_id}}
+        </el-descriptions-item>
+
+        <el-descriptions-item>
+          <template slot="label">
+            <i class="el-icon-user"></i>
+            姓名
+          </template>
+          {{visReqDetails.student_name}}
+        </el-descriptions-item>
+
+        <el-descriptions-item>
+          <template slot="label">
+            <i class="el-icon-user"></i>
+            院系
+          </template>
+          {{getDepartNameById(visReqDetails.depart)}}
+        </el-descriptions-item>
+
+        <el-descriptions-item>
+          <template slot="label">
+            <i class="el-icon-user"></i>
+            入学年份
+          </template>
+          {{visReqDetails.attendance_year}}
+        </el-descriptions-item>
+
+        <el-descriptions-item>
+          <template slot="label">
+            <i class="el-icon-user"></i>
+            认证状态
+          </template>
+          <el-tag v-if="visReqDetails.status === 0" type="primary" size="mini" >等待审批</el-tag>
+          <el-tag v-else-if="visReqDetails.status === 1" type="success" size="mini" >审批通过</el-tag>
+          <el-tag v-else type="danger" size="mini" >拒绝审批</el-tag>
+          <div></div>
+        </el-descriptions-item>
+
+        <el-descriptions-item v-if="visReqDetails.comment != null">
+          <template slot="label">
+            <i class="el-icon-user"></i>
+            审批意见
+          </template>
+          {{visReqDetails.comment}}
+        </el-descriptions-item>
+
+        </el-descriptions-item>
+      </el-descriptions>
+    </Modal>
 
   </d2-container>
 </template>
@@ -201,11 +261,13 @@ export default {
     return {
       token: util.cookies.get('token'),
       drawer: false,
+      modal: false,
       status: 0,
       userInfo: {},
       certificateInfo: {},
       reqList: [],
-      lastReqDetails: {}
+      lastReqDetails: {},
+      visReqDetails: {}
     }
   },
   methods: {
@@ -218,7 +280,7 @@ export default {
      * 通过status获得具体的认证状态信息
      */
     getStatusInfo (status) {
-      return status === -1 ? '未认证' : status === 0 ? '认证中' : status === 1 ? '认证成功' : '认证失败'
+      return status === -1 ? '未认证' : status === 0 ? '等待审批' : status === 1 ? '认证成功' : '认证失败'
     },
     /**
      * 获得用户具体信息
@@ -250,8 +312,8 @@ export default {
      */
     async getReqDetails (reqId) {
       const res = await api.GET_USER_CERTIFICATE_REQ_DETAIL(reqId)
-      const msg = JSON.stringify(res).slice(1, -1).split(',').join('\n\n')
-      this.$alert(msg, '详细信息', { confirmButtonText: '确定' })
+      this.visReqDetails = res
+      this.modal = true
     },
     /**
      * 用户发出认证申请
