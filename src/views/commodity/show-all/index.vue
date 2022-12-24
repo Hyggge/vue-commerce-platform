@@ -58,10 +58,10 @@
               </div>
               <!--商品介绍-->
               <h4 style="height: 70px; color: grey; margin-top: 10px">
-                {{modifyIntroduction(commodity.introduction)}}
+                {{modifyIntroduction(commodity.introduction, 50)}}
               </h4>
               <!--商品名称-->
-              <h2>{{commodity.name}}</h2>
+              <h2>{{modifyIntroduction(commodity.name, 10)}}</h2>
               <!--商品价格-->
               <h2 style="color: #ff8226">
                 {{`¥` + (commodity.price - commodity.discount).toFixed(2)}}
@@ -208,12 +208,12 @@ export default {
     /**
      * 修改商品介绍
      */
-    modifyIntroduction (introduction) {
+    modifyIntroduction (introduction, maxLength) {
       const ans = String(introduction)
-      if (ans.length > 50) {
-        return ans.slice(0, 30) + '...'
+      if (ans.length > maxLength) {
+        return ans.slice(0, maxLength) + '...'
       } else {
-        return ans + '... '
+        return ans
       }
     },
     /**
