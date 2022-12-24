@@ -87,6 +87,7 @@
               list-type="picture"
               :headers="{Authorization: 'Bearer ' + token}"
               :on-success="handleUploadSuccess"
+              :before-upload="beforeImageUpload"
               :file-list="[]">
               <el-button size="small" type="primary">点击上传</el-button>
               <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
@@ -271,6 +272,20 @@ export default {
       } else {
         callback()
       }
+    },
+    /**
+     * 检查用户上传图片的格式和大小
+     */
+    beforeImageUpload (file) {
+      const isJPG = (file.type === 'image/jpeg') || (file.type === 'image/png')
+      const isLt2M = file.size / 1024 / 1024 < 2
+      if (!isJPG) {
+        this.$Message.error('上传图片只能是 JPG/PNG 格式!')
+      }
+      if (!isLt2M) {
+        this.$Message.error('上传图片大小不能超过 2MB!')
+      }
+      return isJPG && isLt2M
     }
   },
   mounted () {

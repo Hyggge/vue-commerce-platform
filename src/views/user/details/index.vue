@@ -20,6 +20,7 @@
                :headers="{Authorization: 'Bearer ' + token}"
                :on-success="handleUploadSuccess"
                :on-error="handleUploadError"
+               :before-upload="beforeImageUpload"
                :show-file-list="false"
                :action="`/api/file/upload`">
                <el-button size="mini"  type="success" >上传新头像</el-button>
@@ -422,7 +423,22 @@ export default {
     },
     handleUploadError (res, file) {
       this.$Message.error('上传失败！')
-    }
+    },
+    /**
+     * 检查用户上传图片的格式和大小
+     */
+    beforeImageUpload (file) {
+      const isJPG = (file.type === 'image/jpeg') || (file.type === 'image/png')
+      const isLt2M = file.size / 1024 / 1024 < 2
+
+      if (!isJPG) {
+        this.$Message.error('上传图片只能是 JPG/PNG 格式!')
+      }
+      if (!isLt2M) {
+        this.$Message.error('上传图片大小不能超过 2MB!')
+      }
+      return isJPG && isLt2M
+    },
   },
   mounted () {
     this.getUserInfo()

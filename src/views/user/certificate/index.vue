@@ -41,7 +41,8 @@
               action="/api/file/upload"
               :show-file-list="false"
               :headers="{Authorization: 'Bearer ' + token}"
-              :on-success="handleUploadSuccess">
+              :on-success="handleUploadSuccess"
+              :before-upload="beforeImageUpload">
               <img v-if="imageUrl" :src="imageUrl" style="width: 100%" class="avatar" />
               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
@@ -119,6 +120,21 @@ export default {
         .catch((err) => {
           console.log(err)
         })
+    },
+    /**
+     * 检查用户上传图片的格式和大小
+     */
+    beforeImageUpload (file) {
+      const isJPG = (file.type === 'image/jpeg') || (file.type === 'image/png')
+      const isLt2M = file.size / 1024 / 1024 < 2
+
+      if (!isJPG) {
+        this.$Message.error('上传图片只能是 JPG/PNG 格式!')
+      }
+      if (!isLt2M) {
+        this.$Message.error('上传图片大小不能超过 2MB!')
+      }
+      return isJPG && isLt2M
     },
     /**
      * 上传图片成功后记录image_id
