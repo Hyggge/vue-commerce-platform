@@ -255,9 +255,9 @@ export default {
      * 验证价格是否合法
      */
     checkPrice (rule, value, callback) {
-      const regExp = /^[0-9]+\.[0-9]{2}$/
+      const regExp = /^[0-9]+([.][0-9]{0,2})?$/
       if (!regExp.test(value)) {
-        callback(new Error('必须输入两位小数'))
+        callback(new Error('输入数字不合法（必须为整数、1位小数或2位小数）'))
       } else {
         callback()
       }
