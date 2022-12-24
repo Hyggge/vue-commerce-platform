@@ -83,9 +83,12 @@ export default {
       console.log(res)
       const imageId = res.id
       console.log(imageId)
-      const ret = await api.DOWNLOAD_FILE(imageId)
-      const imageUrl = ret.url
-      console.log(imageUrl)
+      // 直接向服务器发起请求返回的是临时链接
+      // const ret = await api.DOWNLOAD_FILE(imageId)
+      // const imageUrl = ret.url
+      // console.log(imageUrl)
+      // 改用拼接而成的永久连接
+      const imageUrl = process.env.VUE_APP_API + '/api/file/download/' + imageId
       this.$refs.md.$img2Url(pos, imageUrl)
     },
     /**
