@@ -47,12 +47,13 @@
       <!--商品参数-->
       <el-tab-pane  label="商品参数" name="1">
         <el-form ref="form2" :model="form" label-width="80px" style="width: 80%; margin-left: 20px">
+
           <!--循环生成参数输入框-->
           <div v-for="(para, paraIndex) in form.para_set" :key="paraIndex">
             <el-form-item label="参数名" :prop="'para_set.' +  paraIndex + '.name'" :rules="rules.paraName">
               <el-input v-model="para.name" style="width: 300px"></el-input>
-              <a v-if="form.para_set.length !== 1" class="el-icon-delete" style="margin-left: 10px" @click="deletePara(paraIndex)"></a>
-              <a v-if="paraIndex === form.para_set.length - 1" class="el-icon-plus" style="margin-left: 10px" @click="addPara"></a>
+              <a class="el-icon-delete" style="margin-left: 10px" @click="deletePara(paraIndex)"></a>
+              <!--<a v-if="paraIndex === form.para_set.length - 1" class="el-icon-plus" style="margin-left: 10px" @click="addPara"></a>-->
             </el-form-item>
             <!--循环生成可选项输入框-->
             <el-form-item label="可选项" required>
@@ -71,6 +72,8 @@
             </el-form-item>
             <hr style="margin-bottom: 20px">
           </div>
+          <!--生成参数的按钮-->
+          <el-button type="primary" @click="addPara"> 增加参数 </el-button>
         </el-form>
       </el-tab-pane>
       <!--商品图片 TODO:商品图片有可能有多个-->
@@ -132,13 +135,13 @@ export default {
         image_id: '',
         para_set: [
           // item
-          {
-            name: '',
-            options: [
-              // para
-              { description: '', price: '' }
-            ]
-          }
+          // {
+          //   name: '',
+          //   options: [
+          //     // para
+          //     { description: '', price: '' }
+          //   ]
+          // }
         ]
       },
       rules: {
