@@ -6,17 +6,17 @@
     <el-row>
       <el-col :span="12" :offset="4" label-width="80px">
         <el-form ref="form" :model="form" label-width="80px">
-          <el-form-item label="学号">
+          <el-form-item label="学号" required>
             <el-input v-model.trim="form.student_id" @blur="checkDupStudentId"></el-input>
           </el-form-item>
-          <el-form-item label="姓名">
+          <el-form-item label="姓名" required>
             <el-input v-model.trim="form.student_name"></el-input>
           </el-form-item>
-          <el-form-item label="性别">
+          <el-form-item label="性别" required>
             <el-radio v-model="form.gender" :label="0">男</el-radio>
             <el-radio v-model="form.gender" :label="1">女</el-radio>
           </el-form-item>
-          <el-form-item label="入学年份">
+          <el-form-item label="入学年份" required>
             <el-date-picker
               style="width: 100%"
               v-model="form.attendance_year"
@@ -25,7 +25,7 @@
               placeholder="选择年">
             </el-date-picker>
           </el-form-item>
-          <el-form-item label="院系">
+          <el-form-item label="院系" required>
             <el-select v-model="form.depart" placeholder="请选择" style="width: 100%">
               <el-option
                 v-for="item in options"
