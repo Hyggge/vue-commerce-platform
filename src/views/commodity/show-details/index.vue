@@ -11,7 +11,7 @@
       <el-col :span="12" :offset="1" style="margin-top: 15px">
         <!--商品介绍-->
         <h3 style="color: black">
-          {{commodityDetails.introduction}}
+          {{commodityDetails.name + ": " + commodityDetails.introduction}}
         </h3>
         <!--商品销售-->
         <h5 style="color: lightslategray">
