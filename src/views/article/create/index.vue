@@ -13,7 +13,7 @@
       </div>
     </template>
     <!--推荐商品的连接-->
-    <el-input size="mini" placeholder="请输入推荐的商品连接...(非必要)" v-model.trim="article.commodityUrl"></el-input>
+    <el-input size="mini" placeholder="请输入推荐的商品链接...(可选)" v-model.trim="article.commodityUrl"></el-input>
     <!--富文本编辑器-->
     <mavon-editor v-model="article.content" ref=md class="editor" @imgAdd="imgAdd" @imgDel="imgDel" @change="changeContent"/>
   </d2-container>
@@ -46,7 +46,7 @@ export default {
         this.$Message.error('文章内容不能为空！')
       } else if (this.article.commodityUrl !== '' &&
         new RegExp('^' + window.location.href.split('#')[0] + '#/commodity/show-details/\\d+$').test(this.article.commodityUrl) === false) {
-        this.$Message.error('不是有效的商品连接！')
+        this.$Message.error('不是有效的商品链接！')
       } else {
         const data = {
           title: this.article.title,

@@ -13,7 +13,7 @@
       </div>
     </template>
     <!--推荐商品的连接-->
-    <el-input size="mini" placeholder="请输入推荐的商品连接...(非必要)" v-model.trim="article.commodityUrl"></el-input>
+    <el-input size="mini" placeholder="请输入推荐的商品链接...(可选)" v-model.trim="article.commodityUrl"></el-input>
     <!--富文本编辑器-->
     <mavon-editor v-model="article.content" ref=md class="editor" @imgAdd="imgAdd" @imgDel="imgDel" @change="changeContent"/>
   </d2-container>
@@ -48,7 +48,8 @@ export default {
       const res = await api.GET_ARTICLE_DETAILS(this.articleId)
       this.article.title = res.title
       this.article.content = res.content
-      if (res.commodity !== null) this.article.commodityUrl = process.env.VUE_APP_USER_API_BASE + 'commodity/show-details/' + res.commodity.id
+      const base = window.location.href.split('#')[0] + '#/'
+      if (res.commodity !== null) this.article.commodityUrl = base + 'commodity/show-details/' + res.commodity.id
       console.log(this.article)
     },
     /**
