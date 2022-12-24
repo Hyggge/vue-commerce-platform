@@ -23,6 +23,14 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
       method: 'get',
       params: { bom: true }
     })
+  },
+
+  UPDATE_USER_INFO (userId, data) {
+    return request({
+      url: `/user/${userId}`,
+      method: 'put',
+      data
+    })
   }
 
 })
