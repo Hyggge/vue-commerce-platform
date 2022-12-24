@@ -177,7 +177,7 @@ export default {
       data.para_set.forEach((para, paraIndex) => {
         const map = {}
         para.options.forEach((option, optionIndex) => {
-          map[option.value] = ((parseFloat(option.price) - parseFloat(data.price))).toFixed(2) + ''
+          map[option.description] = ((parseFloat(option.price) - parseFloat(data.price))).toFixed(2) + ''
         })
         para.options = map
       })
