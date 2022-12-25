@@ -359,10 +359,10 @@ export default {
      */
     openFormForUpdate () {
       this.modelForUpdate = true
-      this.form.signature = this.userInfo.signature
-      this.form.email = this.userInfo.email
-      this.form.phone_no = this.userInfo.phone_no
       this.form.nickname = this.userInfo.nickname
+      this.form.email = this.userInfo.email
+      this.form.signature = this.userInfo.signature === null ? '' : this.userInfo.signature
+      this.form.phone_no = this.userInfo.phone_no === null ? '' : this.userInfo.phone_no
     },
     /**
      * 检查新邮箱是否合法
