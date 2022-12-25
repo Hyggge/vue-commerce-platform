@@ -205,10 +205,11 @@ export default {
       this.$prompt('请输入要添加的管理员学号', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消'
-      }).then(({ studentId }) => {
-        api.ADD_SHOP_ADMIN(this.curShopId, studentId)
+      }).then((res) => {
+        api.ADD_SHOP_ADMIN(this.curShopId, res.value)
           .then(() => {
             this.$Message.success('添加成功！')
+            this.getShopDetails()
           })
           .catch(() => {
             this.$Message.error('添加失败！')
@@ -219,10 +220,11 @@ export default {
       this.$prompt('请输入要删除的管理员学号', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消'
-      }).then(({ studentId }) => {
-        api.DELETE_SHOP_ADMIN(this.curShopId, studentId)
+      }).then((res) => {
+        api.DELETE_SHOP_ADMIN(this.curShopId, res.value)
           .then(() => {
             this.$Message.success('删除成功！')
+            this.getShopDetails()
           })
           .catch(() => {
             this.$Message.error('删除失败！')

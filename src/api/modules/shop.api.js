@@ -23,19 +23,19 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
     })
   },
 
-  DELETE_SHOP_ADMIN (shopId, adminId) {
+  DELETE_SHOP_ADMIN (shopId, studentId) {
     return request({
       url: `shop/shop_admin/${shopId}`,
       method: 'delete',
-      data: { adminId }
+      data: { student_id: studentId }
     })
   },
 
-  ADD_SHOP_ADMIN (shopId, adminId) {
+  ADD_SHOP_ADMIN (shopId, studentId) {
     return request({
       url: `shop/shop_admin/${shopId}`,
-      method: 'POST',
-      data: { adminId }
+      method: 'post',
+      data: { student_id: studentId }
     })
   },
 
