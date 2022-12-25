@@ -326,7 +326,7 @@ export default {
       if (!/^[0-9]+\.[0-9]{2}$/.test(this.newDiscount)) {
         this.$Message.error('必须输入两位小数！')
       } else {
-        // await api.UPDATE_COMMODITY_DETAILS(commodityId, { discount: this.newDiscount })
+        await api.UPDATE_COMMODITY_DETAILS(commodityId, { discount: this.newDiscount })
         await this.getCommodityList()
         this.$Message.success('修改成功！')
       }
